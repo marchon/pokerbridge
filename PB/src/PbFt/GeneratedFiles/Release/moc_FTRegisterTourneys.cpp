@@ -1,0 +1,138 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'FTRegisterTourneys.h'
+**
+** Created: Thu 11. Mar 20:18:15 2010
+**      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include "stdafx.h"
+#include "..\..\FTRegisterTourneys.h"
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'FTRegisterTourneys.h' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 61
+#error "This file was generated using the moc from 4.5.2. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+static const uint qt_meta_data_FTTask[] = {
+
+ // content:
+       2,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_FTTask[] = {
+    "FTTask\0"
+};
+
+const QMetaObject FTTask::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_FTTask,
+      qt_meta_data_FTTask, 0 }
+};
+
+const QMetaObject *FTTask::metaObject() const
+{
+    return &staticMetaObject;
+}
+
+void *FTTask::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_FTTask))
+        return static_cast<void*>(const_cast< FTTask*>(this));
+    return QObject::qt_metacast(_clname);
+}
+
+int FTTask::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QObject::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    return _id;
+}
+static const uint qt_meta_data_FTRegisterTourneys[] = {
+
+ // content:
+       2,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       8,   12, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+
+ // slots: signature, parameters, type, tag, flags
+      20,   19,   19,   19, 0x09,
+      39,   19,   19,   19, 0x09,
+      65,   59,   19,   19, 0x09,
+     108,  103,   19,   19, 0x09,
+     131,   59,   19,   19, 0x09,
+     185,  177,   19,   19, 0x09,
+     211,  208,   19,   19, 0x09,
+     241,  208,   19,   19, 0x09,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_FTRegisterTourneys[] = {
+    "FTRegisterTourneys\0\0onTooManyWindows()\0"
+    "onTourneysUpdated()\0lobby\0"
+    "onTourneyLobbyOpened(FTTourneyLobby*)\0"
+    "list\0onListUpdated(FTList*)\0"
+    "onTourneyLobbyObserveClicked(FTTourneyLobby*)\0"
+    "tableId\0onTableOpened(QString)\0wh\0"
+    "onLobbyClosing(FTWidgetHook*)\0"
+    "onLobbyHooked(FTWidgetHook*)\0"
+};
+
+const QMetaObject FTRegisterTourneys::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_FTRegisterTourneys,
+      qt_meta_data_FTRegisterTourneys, 0 }
+};
+
+const QMetaObject *FTRegisterTourneys::metaObject() const
+{
+    return &staticMetaObject;
+}
+
+void *FTRegisterTourneys::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_FTRegisterTourneys))
+        return static_cast<void*>(const_cast< FTRegisterTourneys*>(this));
+    return QObject::qt_metacast(_clname);
+}
+
+int FTRegisterTourneys::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QObject::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: onTooManyWindows(); break;
+        case 1: onTourneysUpdated(); break;
+        case 2: onTourneyLobbyOpened((*reinterpret_cast< FTTourneyLobby*(*)>(_a[1]))); break;
+        case 3: onListUpdated((*reinterpret_cast< FTList*(*)>(_a[1]))); break;
+        case 4: onTourneyLobbyObserveClicked((*reinterpret_cast< FTTourneyLobby*(*)>(_a[1]))); break;
+        case 5: onTableOpened((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 6: onLobbyClosing((*reinterpret_cast< FTWidgetHook*(*)>(_a[1]))); break;
+        case 7: onLobbyHooked((*reinterpret_cast< FTWidgetHook*(*)>(_a[1]))); break;
+        default: ;
+        }
+        _id -= 8;
+    }
+    return _id;
+}
+QT_END_MOC_NAMESPACE
