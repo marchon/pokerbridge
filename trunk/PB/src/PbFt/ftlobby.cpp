@@ -79,19 +79,18 @@ void FTLobbyHooks::onMouseButtonPress(QWidget *w, QEvent *e)
 void FTLobbyHooks::onWidgetShow(QWidget *w)
 {
 //	LOG_HOOK("onWidgetShow "<<QTUtil::widgetInfo(w));
-	if(FTLobby::instance())
-	{
-		FTLobby::instance()->onWidgetShow(w);
-	
-		if(!FTPanel::instance())
+	if(!FTPanel::instance())
 		{
+			qLog(Debug)<<"Need Panel="<<PB_OPTION_IS_TRUE("Debug/Panel", false);
 			if(PB_OPTION_IS_TRUE("Debug/Panel", false))
 			{
 				// placed here to guarantee GUI thread
 				FTPanel::createInstance();
 			}
 		}
-	}
+
+	if(FTLobby::instance())
+		FTLobby::instance()->onWidgetShow(w);
 }
 
 void FTLobbyHooks::onWidgetSetVisible(QWidget *w, bool isVisible)
@@ -117,6 +116,8 @@ void FTLobbyHooks::onStringAppend(const QString &self, const QString &s)
 
 void FTLobbyHooks::onPaint(QWidget *w)
 {
+	if(0==FTLobby::instance())
+		FTLobby::create(w);
 //	LOG_HOOK("onPaint");
 	if(FTLobby::instance())
 		FTLobby::instance()->onPaint(w);
@@ -143,6 +144,8 @@ QWaitCondition FTLobby::lobbyCreated;
 
 FTLobby* FTLobby::instance()
 { 
+	return _instance;
+	/*
 	if(inInstance)
 		return 0;
 	inInstance=true;
@@ -153,11 +156,20 @@ FTLobby* FTLobby::instance()
 		inInstance=false;
 		return _instance;  
 	} 
+	QCoreApplication *app = QCoreApplication::instance();
+	if(!app || app->thread()!=QThread::currentThread())
+	{
+		inInstance=false;
+		instanceMutex.unlock();
+		return 0;
+	}
+
 	qLog(Debug)<<"crea";
 	_instance=new FTLobby();
 	instanceMutex.unlock(); 
 	inInstance=false;
 	return _instance; 
+	*/
 }//return qFTLobby(); }
 
 /*FTLobby* FTLobby::instance()
@@ -169,9 +181,22 @@ FTLobby* FTLobby::instance()
 	_instance = instance;
 }
 */
+
+void FTLobby::create(QWidget *w)
+{
+	if(0==_instance)
+	{
+		QWidget *lobbyWidget = QTUtil::parentWithClass(w,"CMainWindow");
+		if(0!=lobbyWidget)
+		{
+			_instance = new FTLobby();
+		}
+	}
+}
+
 FTLobby::FTLobby() : FTWidgetHook(0,0)
 {
-	qLog(Debug)<<"FTLobby::FTLobby";
+	qLog(Debug)<<"FTLobby::FTLobby, thread "<<QThread::currentThread();
 	_loginDone = false;
 
 	_initialized = false;
@@ -184,8 +209,14 @@ void FTLobby::init()
 		return;
 	
 
+	//QString cfgFile;
+	//cfgFile.append("PBFT-%1.INI").arg(GetCurrentProcessId());
 
-	QString settingsFilePath = QDir::currentPath()+QDir().separator()+"PBFT.INI";
+	//QString settingsFilePath = QDir::currentPath()+QDir().separator()+cfgFile;
+	//if(!QFile::exists(settingsFilePath))
+	
+	QString	settingsFilePath = QDir::currentPath()+QDir().separator()+"PBFT.INI";
+
 	_settings = new QSettings(settingsFilePath, QSettings::IniFormat);
 
 	_tables = new FTTables(0, this); 
@@ -229,13 +260,20 @@ void FTLobby::onWidget(QWidget *w)
 		onWidgetChilds(w, true);	
 	//}
 
+	if(PB_OPTION_IS_TRUE("Modules/AutoLogin", false))
+		autoLogin(w);
+}
+
+void FTLobby::autoLogin(QWidget *w)
+{
 	if(!_loginDone)
 	{
+		QString loginButtonName = PB_OPTION_STR("AutoLogin/Button", "btn_login"); //btn_observe
 		if(!_loginBtn)
-			_loginBtn = FTButton::fromWidget(w,this, "","","btn_login");
+			_loginBtn = FTButton::fromWidget(w,this, "","",loginButtonName);
 		if(_loginBtn && _loginBtn->button() && _loginBtn->button()->isEnabled() && widget() && _loginBtn->visibleTo(this))
 		{
-			qLog(Info)<<"Clicking login";
+			qLog(Info)<<"Clicking login button:"<<loginButtonName;
 			_loginBtn->press();
 			_loginDone = true;
 			onLoggedIn();

@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "fthooks.h"
 #include "easyhook.h"
+#undef QT_NO_OPENSSL
+#include "QtNetwork/qsslsocket.h"
+#include "QtNetwork/qhttp.h"
 
 #define NO_REENT_START(x) 		static bool inHook##x = false;\
 		if(!inHook##x){\
@@ -337,3 +340,110 @@ QWidget *QTUtil::childButton(QWidget *w, const QString &title)
 	}
 	return 0;
 }
+
+
+HOOK_TRACE_INFO hCreateMutexA = {0};
+//HANDLE WINAPI (*CreateMutexOriginal)(LPSECURITY_ATTRIBUTES lpMutexAttributes,BOOL bInitialOwner, LPCTSTR lpName)
+
+HANDLE WINAPI CreateMutexHooked(LPSECURITY_ATTRIBUTES lpMutexAttributes,BOOL bInitialOwner, LPCTSTR lpName)
+{
+	if(lpName)
+	{
+		char *ftp = (char*)strstr(lpName,"Full Tilt Poker");
+		if(ftp)
+		{
+			// modify mutex name to allow multiple FTP clients...
+
+			DWORD dwProcessId = GetCurrentProcessId();
+			static char name[256];
+			sprintf(name,"MSCTF.Shared.MUTEX.EBKFTP%dCHR",dwProcessId);
+			lpName= name;
+		}
+	}
+	return CreateMutexA(lpMutexAttributes, bInitialOwner, lpName);
+}
+
+bool installSysHooks()
+{
+	if(!EasyHook("kernel32.dll","CreateMutexA",CreateMutexHooked, &hCreateMutexA))
+		return false;
+}
+/*
+
+class QSslSocketHooks : public QSslSocket
+{
+public:
+	qint64 _readData(char *data, qint64 maxlen);
+    qint64 _writeData(const char *data, qint64 len); 
+};
+class QAbstractSocketHooks : public QAbstractSocket
+{
+public:
+	qint64 _readData(char *data, qint64 maxlen);
+    qint64 _writeData(const char *data, qint64 len); 
+};
+
+HOOK_TRACE_INFO h_SSL_read = {0};
+HOOK_TRACE_INFO h_SSL_write = {0};
+HOOK_TRACE_INFO h_QAbstractSocket_read = {0};
+
+qint64 QSslSocketHooks::_readData(char *data, qint64 maxlen)
+{
+	qint64 l = QSslSocket::readData(data,maxlen);
+	FILE *f=fopen("ssl.txt","a+b");
+	fprintf(f,"\nread:\n");
+	fwrite(data,1,l,f);
+	fclose(f);
+	return l;
+}
+
+qint64 QSslSocketHooks::_writeData(const char *data, qint64 len)
+{
+	FILE *f=fopen("ssl.txt","a+b");
+	fprintf(f,"\nwrite:\n");
+	fwrite(data,1,len,f);
+	fclose(f);
+	return QSslSocket::writeData(data,len);
+}
+
+qint64 QAbstractSocketHooks::_readData(char *data, qint64 maxlen)
+{
+	qint64 l = QAbstractSocket::readData(data,maxlen);
+	FILE *f=fopen("as.txt","a+b");
+	fprintf(f,"\nread:\n");
+	fwrite(data,1,l,f);
+	fclose(f);
+	return l;
+}
+
+HOOK_TRACE_INFO h_QHttp_readAll = {0};
+class QHookHttp: QHttp
+{
+public:
+	QByteArray _readAll();
+};
+
+QByteArray QHookHttp::_readAll()
+{
+	QByteArray ba = QHttp::readAll();
+	FILE *f=fopen("ba.txt","a+b");
+	fprintf(f,"\nread:\n");
+	fwrite(ba.data(),1,ba.size(),f);
+	fclose(f);
+	return ba;
+}
+
+bool installSsl()
+{
+	if(!EasyHookCpp("QtNetwork4.dll", "?readData@QSslSocket@@MAE_JPAD_J@Z", QSslSocketHooks::_readData, &h_SSL_read))
+		return false;
+	if(!EasyHookCpp("QtNetwork4.dll", "?writeData@QSslSocket@@MAE_JPBD_J@Z", QSslSocketHooks::_writeData, &h_SSL_write))
+		return false;
+	if(!EasyHookCpp("QtNetwork4.dll", "?readData@QAbstractSocket@@MAE_JPAD_J@Z", QAbstractSocketHooks::_readData, &h_QAbstractSocket_read))
+		return false;	
+	if(!EasyHookCpp("QtNetwork4.dll", "?readAll@QHttp@@QAE?AVQByteArray@@XZ", QHookHttp::_readAll, &h_QHttp_readAll))
+		return false;	
+
+	return true;
+	
+}*/

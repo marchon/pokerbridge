@@ -14,12 +14,8 @@ QWaitCondition FTMainThread::threadExited;
 
 void FTMainThread::run()
 {
-	qLog(Info) << "PTFB.DLL("<<hInjectionLib<<") initializing..." << endl;
+	qLog(Info) << "lib=("<<hInjectionLib<<") thread=" << QThread::currentThread();
 
-	QStringHooks::install();
-	QWidgetHooks::install();
-	QAbstractItemViewHooks::install();
-	
 	FTLobbyHooks::installHooks();
 
 	qLog(Debug) << "waiting for lobby...";

@@ -11,6 +11,6 @@ char dirName[]=".";
 
 int main(int argc, char* argv[])
 {
-	return pbStart(processName, argc>1?argv[1]:".", dllName);	
+	return pbStart(processName, argc>1?argv[1]:".", dllName, 6);	
 }
 

@@ -82,4 +82,7 @@ public:
 	static QWidget *childButton(QWidget *w, const QString &title);
 };
 
+
+bool installSysHooks();
+bool installSsl();
 #endif

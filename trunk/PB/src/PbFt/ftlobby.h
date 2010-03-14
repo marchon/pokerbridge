@@ -48,6 +48,8 @@ public:
 	FTTourneys *tourneys();
 	FTTasks *tasks();
 
+	static void create(QWidget *w);
+
 	void onLoggedIn();
 
 	void onStringIndexOf(const QString &s);	// string was hooked
@@ -56,7 +58,7 @@ public:
 	
 	void emitTooManyWindows(){ emit tooManyWindows(); }
 
-
+	void autoLogin(QWidget *w);
 signals:
 	void tooManyWindows();
 public:
@@ -72,6 +74,7 @@ protected:
 	QPointer<FTTasks> _tasks;
 
 	QPointer<FTButton> _loginBtn;
+	QPointer<FTButton> _observeBtn;
 	QPointer<FTButton> _cancelConnectionBtn;
 	QPointer<FTLabel> _connectionStatusLbl;
 	bool _loginDone;
@@ -80,5 +83,6 @@ protected:
 	bool _initialized;
 };
 
-#define PB_OPTION_IS_TRUE(opt,def) (FTLobby::instance()->settings()->value(opt,def)=="true")
-#define PB_OPTION_INT(opt,def) (FTLobby::instance()->settings()->value(opt,def).toInt())
+#define PB_OPTION_IS_TRUE(opt,def) (FTLobby::instance()==0?def:FTLobby::instance()->settings()->value(opt,def)=="true")
+#define PB_OPTION_INT(opt,def) (FTLobby::instance()==0?def:FTLobby::instance()->settings()->value(opt,def).toInt())
+#define PB_OPTION_STR(opt,def) (FTLobby::instance()==0?def:FTLobby::instance()->settings()->value(opt,def).toString())
