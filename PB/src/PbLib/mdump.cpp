@@ -121,5 +121,6 @@ LONG MiniDumper::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo )
 	if (szResult)
 		::MessageBoxA( NULL, szResult, m_szAppName, MB_OK );
 
+	qLog(Info) << "Minidump: "<<szResult;
 	return retval;
 }

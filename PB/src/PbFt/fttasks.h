@@ -14,8 +14,11 @@ public:
 
 class FTTasks : public QObject
 {
+	Q_OBJECT
 public:
 	FTTasks(QObject *parent=0);
-	void stop();
+
 	FTTask *tableOpener();
+public slots:
+	void stop();
 };

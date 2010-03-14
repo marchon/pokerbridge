@@ -2,18 +2,32 @@
 
 #include "ftmainthread.h"
 #include "mdump.h"
+#include "fthooks.h"
 
 // qt stuff will work only in Qt thread...
 FTMainThread mainThread;
 
 void PB_EXPORT APIENTRY NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* pInfo)
 {
+	installSysHooks();
+	Sleep(2000);
+
+	QStringHooks::install();
+	QWidgetHooks::install();
+	QAbstractItemViewHooks::install();
+	//installSsl();
+
 	RhWakeUpProcess();
-	Sleep(3000); // QT should get initialized
-	MiniDumper::Install("pbft");
+	Sleep(5000); // QT should get initialized
+
 
 	QPBLog::install();
-	QPBLog::logToFile("pbft.log");
+	static char logName[_MAX_PATH];
+	static char dumpName[_MAX_PATH];
+	sprintf(logName,"pbft-%d.log",GetCurrentProcessId());
+	sprintf(dumpName,"pbft-%d",GetCurrentProcessId());
+	QPBLog::logToFile(logName);
+	MiniDumper::Install(dumpName);
 
 	qLog(Info)<<"starting main thread";
 	
@@ -25,7 +39,7 @@ void PB_EXPORT APIENTRY NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* pInfo)
 	
 	MiniDumper::Uninstall();
 	QPBLog::uninstall();
-	FreeLibraryAndExitThread(FTMainThread::hInjectionLib,0);
+	//FreeLibraryAndExitThread(FTMainThread::hInjectionLib,0);
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,

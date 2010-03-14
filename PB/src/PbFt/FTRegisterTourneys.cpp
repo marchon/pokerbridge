@@ -37,10 +37,22 @@ FTRegisterTourneys::FTRegisterTourneys(QObject *parent):FTTask(parent)
 
 	connect(lobby()->lists(), SIGNAL(listUpdatedEvent(FTList*)), this, SLOT(onListUpdated(FTList*)));
 
-	connect(&_tmr,SIGNAL(timeout()), this, SLOT(execute()));
-
 	_windowsLimit = -1;
 	_timer = -1;
+
+	int period = PB_OPTION_INT("TableOpener/Periodicity",2000);
+	_tmr = new QTimer(this);
+	_tmr->setInterval(period);
+	_tmr->start();
+	connect(_tmr,SIGNAL(timeout()), this, SLOT(execute()), Qt::QueuedConnection);
+	qLog()<<"started timer ";
+
+}
+
+FTRegisterTourneys::~FTRegisterTourneys()
+{
+	if(_tmr->isActive())
+		_tmr->stop();
 }
 
 bool FTRegisterTourneys::checkLobbyAlive()
@@ -73,8 +85,8 @@ void FTRegisterTourneys::onLobbyHooked(FTWidgetHook *wh)
 	if(!lobby())
 		return;
 
-	if(!isRunning())
-		start();
+	//if(!isRunning())
+	//	start();
 }
 
 #define CHECK(msg) if(!checkLobbyAlive()){ qLog(Info)<<msg; return;}
@@ -90,6 +102,11 @@ void FTRegisterTourneys::onTooManyWindows()
 
 void FTRegisterTourneys::start()
 {
+	if(_state!=Inactive)
+	{
+		qLog(Info)<<"regtour::start() called with state Inactive!="<<_state;
+		return;
+	}
 	if(!lobby() || !lobby()->isAlive())
 	{
 		qLog(Info)<<" failed to start regtour, lobby="<<lobby();
@@ -98,19 +115,15 @@ void FTRegisterTourneys::start()
 		return;
 	}
 
-	Q_ASSERT(_state==Inactive);
-	int period = PB_OPTION_INT("TableOpener/Periodicity",10000);
 	//_timer = startTimer(period);
-	_tmr.setInterval(20);
-	_tmr.start();
 	_state = WaitListUpdate;
-	qLog(Info)<<"tourney clicker started period="<<period;
+	qLog(Info)<<"tourney clicker started";
 }
 
 void FTRegisterTourneys::stop()
 {
 	qLog(Info)<<"tourney clicker stopped";
-	if(_timer!=-1)
+	//if(_timer!=-1)
 	{
 		qLog(Info)<<"tourney clicker timer stopped";
 		//killTimer(_timer);
@@ -131,6 +144,12 @@ void FTRegisterTourneys::timerEvent(QTimerEvent *e)
 
 void FTRegisterTourneys::execute()
 {
+	if(_state==Inactive)
+	{
+		qLog(Debug)<<"execute() called when Inactive!!!";
+		return;
+	}
+	qLog(Info)<<"execute()";
 	if(_state==Idle)
 	{
 		_state = WaitListUpdate;
@@ -198,9 +217,12 @@ void FTRegisterTourneys::onTourneyLobbyOpened(FTTourneyLobby *tl)
 //	CHECK(tl,"FTRegisterTourneys::onTourneyLobbyOpened, tl=0");
 	if(!lobby())
 		return;
-
+	
+	//_tmr.start();
 	_forObserve.append(tl);
-		qLog(Info)<<"Tourney lobby "<<tl->tourneyId()<<" opened, waiting observe "<<_forObserve.size();
+	qLog(Info)<<"Tourney lobby "<<tl->tourneyId()<<" opened, waiting observe "<<_forObserve.size();
+	qLog(Info)<<" timer"<<_tmr<<" act "<<_tmr->isActive();
+
 }
 
 void FTRegisterTourneys::onTourneyLobbyObserveClicked(FTTourneyLobby *tl)
@@ -221,7 +243,7 @@ void FTRegisterTourneys::closeLobbies(bool all)
 			_forObserve.remove(i);
 		else if(all || lobby()->tables()->tourneyTable(tl->tourneyId()))
 		{
-			tl->close();
+			tl->immediateClose();
 			_forObserve.remove(i);
 			qLog(Info)<<"closing lobby "<<tl->tourneyId();
 

@@ -7,7 +7,7 @@
 extern "C"{
 #endif
 
-extern int PB_EXPORT pbStart(LPCSTR processName,LPCSTR dirName, LPCSTR dllPath);
+extern int PB_EXPORT pbStart(LPCSTR processName,LPCSTR dirName, LPCSTR dllPath, BOOL bLaunch);
 
 #ifdef __cplusplus
 }

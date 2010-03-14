@@ -11,7 +11,7 @@ extern BOOL EasyHook(LPCSTR module, LPSTR procName, LPVOID hookProc, HOOK_TRACE_
 
 #define EasyHookCpp(dll,decorated,member,handle) EasyHook(dll,decorated,member_ptr(0,&member),handle)
 
-extern ULONG RtlGetProcessID(LPCSTR szProcessNameQuery);
+extern ULONG RtlGetProcessID(LPCSTR szProcessNameQuery, int *count);
 
 #ifdef __cplusplus
 }

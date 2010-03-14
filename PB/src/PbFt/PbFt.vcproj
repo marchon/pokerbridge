@@ -24,6 +24,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="$(SolutionDir)\..\bin\stop.cmd "
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -94,7 +95,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="$(SolutionDir)\stop.cmd "
+				CommandLine="$(SolutionDir)\..\bin\stop.cmd "
 			/>
 			<Tool
 				Name="VCCustomBuildTool"

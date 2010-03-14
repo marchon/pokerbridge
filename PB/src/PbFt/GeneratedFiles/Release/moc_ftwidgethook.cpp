@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'ftwidgethook.h'
 **
-** Created: Fri 12. Mar 15:55:15 2010
+** Created: Sun 14. Mar 04:04:27 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -24,7 +24,7 @@ static const uint qt_meta_data_FTWidgetHook[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   12, // methods
+       6,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,10 +33,11 @@ static const uint qt_meta_data_FTWidgetHook[] = {
       14,   13,   13,   13, 0x05,
       28,   25,   13,   13, 0x05,
       60,   25,   13,   13, 0x05,
+      89,   25,   13,   13, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      88,   13,   13,   13, 0x0a,
-     105,   13,   13,   13, 0x0a,
+     117,   13,   13,   13, 0x0a,
+     134,   13,   13,   13, 0x0a,
 
        0        // eod
 };
@@ -44,6 +45,7 @@ static const uint qt_meta_data_FTWidgetHook[] = {
 static const char qt_meta_stringdata_FTWidgetHook[] = {
     "FTWidgetHook\0\0closeSig()\0wh\0"
     "widgetDestroying(FTWidgetHook*)\0"
+    "widgetClosing(FTWidgetHook*)\0"
     "widgetHooked(FTWidgetHook*)\0"
     "immediateClose()\0close()\0"
 };
@@ -75,12 +77,13 @@ int FTWidgetHook::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: closeSig(); break;
         case 1: widgetDestroying((*reinterpret_cast< FTWidgetHook*(*)>(_a[1]))); break;
-        case 2: widgetHooked((*reinterpret_cast< FTWidgetHook*(*)>(_a[1]))); break;
-        case 3: immediateClose(); break;
-        case 4: close(); break;
+        case 2: widgetClosing((*reinterpret_cast< FTWidgetHook*(*)>(_a[1]))); break;
+        case 3: widgetHooked((*reinterpret_cast< FTWidgetHook*(*)>(_a[1]))); break;
+        case 4: immediateClose(); break;
+        case 5: close(); break;
         default: ;
         }
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }
@@ -99,9 +102,16 @@ void FTWidgetHook::widgetDestroying(FTWidgetHook * _t1)
 }
 
 // SIGNAL 2
-void FTWidgetHook::widgetHooked(FTWidgetHook * _t1)
+void FTWidgetHook::widgetClosing(FTWidgetHook * _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
+}
+
+// SIGNAL 3
+void FTWidgetHook::widgetHooked(FTWidgetHook * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 QT_END_MOC_NAMESPACE

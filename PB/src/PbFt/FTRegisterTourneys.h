@@ -15,7 +15,8 @@ class FTRegisterTourneys : public FTTask
 	Q_OBJECT
 public:
 	FTRegisterTourneys(QObject *parent=0);
-	
+	~FTRegisterTourneys();
+
 	void start();
 	void stop();
 	bool isRunning();
@@ -42,7 +43,7 @@ private:
 	int _state;
 	int _windowsLimit;
 	int _timer;
-	QTimer _tmr;
+	QPointer<QTimer> _tmr;
 	enum{
 		Inactive,
 		Idle,
@@ -51,4 +52,11 @@ private:
 	};
 	QVector<QPointer<FTTourneyLobby>> _forObserve;
 	QPointer<FTLobby> _lobby;
+};
+
+class FTTableStatus : public QObject
+{
+public:
+private:
+	QHash<QString, QString> tableStatus;
 };
