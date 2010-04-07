@@ -3,12 +3,12 @@
 #include "ftpanel.h"
 #include "fthooks.h"
 #include "ftlobby.h"
+#include "fttables.h"
 
 #include "pbtable.h"
 #include "pbseatedplayer.h"
 #include "pbseats.h"
 
-#include "rpcadaptor.h"
 
 
 void FTDlg::onWidget(QWidget *w)
@@ -150,6 +150,7 @@ bool FTActionButton::parse()
 			qLog(Error)<<"failed to parse amount from button ["+text+"]";
 	}
 	setEnabled(true);
+	return true;
 }
 
 
@@ -177,8 +178,12 @@ FTTable::FTTable(QWidget *widget, QObject *parent)
 	sitinBtn.setPrefix("DEAL");	// deal me in
 	
 	//new RpcAdaptor(this);
-}
+	new RMessageAdaptor(this);
+	
+	_tourneyComplete = false;
 
+//	startTimer(2000);
+}
 
 bool FTTable::parseTitle()
 {
@@ -188,7 +193,7 @@ bool FTTable::parseTitle()
 	QString title = widget()->windowTitle();
 	QStringList parts = title.split(" - ");
 
-	if(parts.size()<4)
+	if(parts.size()<3)
 		return false;
 
 	
@@ -213,7 +218,7 @@ bool FTTable::parseTitle()
 
 FTTable::~FTTable(	)
 {
-	
+	qLog(Debug)<<"~FTTable "<<tableId();
 }
 
 QString FTTable::tableId()
@@ -450,7 +455,7 @@ bool FTTable::parseChat(const QString &input, QString &player, const QString &ac
 void FTTable::onHandEnd(const QString&)
 {
 
-	qLog(Debug)<<"seats on table ["<<tableId()<<"] with button at "<<seats()->buttonSeat();
+	qLog(DebugHand)<<"seats on table ["<<tableId()<<"] with button at "<<seats()->buttonSeat();
 	int seatNo=1;
 /*	for(FTSeatsList::iterator p = seats.begin();p!=seats.end();p++,seatNo++)
 		if(*p!=NULL)
@@ -465,7 +470,7 @@ void FTTable::onHandEnd(const QString&)
 
 	setHandId("");
 
-	qLog(Debug)<<"seats cleared on table=["<<tableId()<<"]";
+	qLog(DebugHand)<<"seats cleared on table=["<<tableId()<<"]";
 }
 
 void FTTable::buttonSeat(int pos)
@@ -718,11 +723,23 @@ void FTTable::detachButtons()
 		ab->setButton(0);
 		ab->setEnabled(false);
 	}
-	qLog(Debug)<<"detached buttons";
+	qLog(DebugHand)<<"detached buttons";
 }
 
-void FTTable::onDrawTextItem(QWidget *widget, const QPointF &p, const QTextItem &ti)
+FTTables *FTTable::tables()
 {
+	return static_cast<FTTables*>(parent());
+}
+
+void FTTable::onDrawTextItem(QWidget *w, const QPointF &p, const QTextItem &ti)
+{
+
+	if(widget() && widget()->isAncestorOf(w) && ti.text().indexOf("is over")>-1)
+	{
+		_tourneyComplete = true;
+		tables()->tourneyIsOver(this);
+	}
+
 /*	if(0==hudView)
 		return;
 
@@ -737,10 +754,24 @@ void FTTable::onDrawTextItem(QWidget *widget, const QPointF &p, const QTextItem 
 */
 }
 
+void FTTable::_widgetClosing()
+{
+	FTWidgetHook::_widgetClosing();
+	tables()->sendTableInfo(this);
+}
+
 void FTTable::onWidgetSetVisible(QWidget *w, bool visible)
 {
 	// updates hooks
 	FTWidgetHook::onWidgetSetVisible(w, visible);
+
+
+	if(w==widget())
+		if(!visible)
+		{
+			qLog(Debug)<<"TableHide "<<w<<" t="<<tableId();
+			_widgetClosing();
+		}
 
 	onWidgetChilds(w); //explore buttons
 
@@ -808,12 +839,12 @@ void FTTable::logActiveButtons()
 	Q_FOREACH(FTActionButton *ab, actions)
 	{
 		if(ab->enabled())
-			qLog(Debug)<<ab->prefix()<<" "<<ab->amount();
+			qLog(DebugHand)<<ab->prefix()<<" "<<ab->amount();
 	}
 	if(joinBtn.enabled())
-		qLog(Debug)<<joinBtn.prefix();
+		qLog(DebugHand)<<joinBtn.prefix();
 	if(sitinBtn.enabled())
-		qLog(Debug)<<sitinBtn.prefix();
+		qLog(DebugHand)<<sitinBtn.prefix();
 
 }
 
@@ -913,4 +944,9 @@ void FTTable::waitBB()
 
 void FTTable::onPaint(QWidget *widget)
 {
+}
+
+void FTTable::timerEvent(QTimerEvent *e)
+{
+	//tables()->sendTableInfo(this);
 }

@@ -15,6 +15,7 @@ void MiniDumper::Install( LPCSTR szAppName )
 	m_szAppName = szAppName ? strdup(szAppName) : "Application";
 
 	m_oldHandler = ::SetUnhandledExceptionFilter( TopLevelFilter );
+	qLog(Debug)<<"Exception filter "<<TopLevelFilter<<" installed. old= "<<m_oldHandler;
 }
 
 void MiniDumper::Uninstall()
@@ -29,7 +30,10 @@ void LogException(struct _EXCEPTION_POINTERS *pExceptionInfo )
 
 LONG MiniDumper::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo )
 {
+
 	LogException(pExceptionInfo);
+
+	//DebugBreak();
 
 	LONG retval = EXCEPTION_CONTINUE_SEARCH;
 	HWND hParent = NULL;						// find a better value for your app
@@ -118,9 +122,11 @@ LONG MiniDumper::TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo )
 		szResult = "DBGHELP.DLL not found";
 	}
 
-	if (szResult)
-		::MessageBoxA( NULL, szResult, m_szAppName, MB_OK );
 
 	qLog(Info) << "Minidump: "<<szResult;
+	QPBLog::flushLogFile();
+	//if (szResult)
+	//	::MessageBoxA( NULL, szResult, m_szAppName, MB_OK );
+	TerminateProcess(GetCurrentProcess(), -100);
 	return retval;
 }

@@ -32,14 +32,8 @@ bool RpcListener::listen(uint port)
 void RpcListener::newConnection()
 {
 	RpcChannel *ch = new RpcChannel(_server->nextPendingConnection(), connection());
-	connect(ch, SIGNAL(incomingMessage(QVariantMap)), this, SLOT(connNewMessage(QVariantMap)));
 	qLog(Debug) << "newConnection" <<endl;
 
-	connection()->newChannel(ch);
-}
-
-void RpcListener::connNewMessage(QVariantMap msg)
-{
-	emit incomingMessage(msg, qobject_cast<RpcChannel*>(sender()));
+	connection()->channelConnected(ch);
 }
 

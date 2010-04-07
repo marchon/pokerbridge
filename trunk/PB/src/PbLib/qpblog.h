@@ -29,7 +29,25 @@ inline QDebug qLogInfo(){ return qWarning(); }
 inline QDebug qLogError(){ return qWarning(); }
 inline QDebug qLogDebug(){ return qDebug(); }
 inline QDebug qLog(){return qDebug(); }
+inline QDebug qLogDebugNet(){ return qDebug(); }
+inline QNoDebug qLogDebugHand(){ return QNoDebug();}
+#define qLog(cat) qLog##cat()<<"["<<#cat<<"]"
 
-#define qLog(cat) qLog##cat()
-
+class QPBDumpFile : public QTextStream
+{
+public:
+	QPBDumpFile(QString name, int flags=QIODevice::WriteOnly|QIODevice::Append){
+		QString path=name+QString("%1").arg(GetCurrentProcessId());
+		file.setFileName(path);
+		file.open((QIODevice::OpenMode)flags);
+		setDevice(&file);
+	}
+	~QPBDumpFile()
+	{
+		flush();
+		file.close();
+	}
+private:
+	QFile file;
+};
 #endif

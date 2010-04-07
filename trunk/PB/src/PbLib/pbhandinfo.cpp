@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "pbhandinfo.h"
-
+/*
 double PBGameInfo::smallBlind()
 {
 	return _smallBlind;
@@ -15,6 +15,17 @@ double PBGameInfo::bigBlind()
 {
 	return _bigBlind;
 }
+
+QString PBGameInfo::site()
+{
+	return _site;
+}
+
+void PBGameInfo::setSite(const QString &site)
+{
+	_site = site;
+}
+
 
 void PBGameInfo::setBigBlind(double bb)
 {
@@ -42,7 +53,7 @@ void PBGameInfo::setGameType(QString type)
 	_gameType = type;
 }
 
-
+*/
 
 
 
@@ -68,6 +79,6 @@ void PBHandInfo::setTableId(QString tableId)
 
 QString PBHandInfo::toTypeString()
 {
-	return gameType()+QString(" %0").arg(maxSeats())+"Max "+QString("$%0/$%1").arg(smallBlind()).arg(bigBlind());
+	return QString(" %0").arg(maxSeats())+"Max "+QString("$%0/$%1").arg(smallBlind()).arg(bigBlind());
 }
 

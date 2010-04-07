@@ -41,9 +41,9 @@ bool FTTourneyList::parse(FTList *list, int row, PBTourneyInfo *ti)
 	{
 		QString s = list->value(row, col);
 		if(s=="Registering")
-			ti->setTourneyStatus(PBTourneyInfo::Registering);
+			ti->setTourneyStatus("Registering");
 		else if(s=="Running")
-			ti->setTourneyStatus(PBTourneyInfo::Running);
+			ti->setTourneyStatus("Running");
 	}
 	return parsedOk;
 }
@@ -55,7 +55,3 @@ bool FTTourneyList::parseBuyIn(QString sBuyin, PBTourneyInfo *ti)
 	return true;
 }
 
-void FTTourneyList::openTourneyLobby(FTListClicker *filter)
-{
-	click(filter);
-}

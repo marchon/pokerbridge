@@ -25,3 +25,4 @@
 #include "qpblog.h"
 
 #include "ftdefs.h"
+#include "rmsg.h"

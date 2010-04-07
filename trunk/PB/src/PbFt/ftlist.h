@@ -16,32 +16,12 @@ public:
 	FTList *list(QString id);
 public:
 	void listUpdated(FTList *list);
+	void paintDone(FTList *list){ emit paintDoneEvent(list); }
 signals:
 	void listUpdatedEvent(FTList *list);
-	
+	void paintDoneEvent(FTList *list);
 private:
 	QHash<QString, FTList*> _lists;
-};
-
-class FTListClicker
-{
-public:
-	virtual void click(FTList *list)=0;
-};
-
-class FTDefaultListClicker: public FTListClicker
-{
-public:
-	FTDefaultListClicker(){_index=-1;}
-	void add(QString column, QString value);
-	bool filter(FTList *list, int row);
-	void click(FTList *list);
-	void load();
-	void setIndex(int index){_index=index;}
-	int index(){return _index;}
-protected:
-	QHash<QString,QList<QString>> _filters;
-	int _index;
 };
 
 
@@ -55,24 +35,29 @@ public:
 
 	void onRowsInserted(QAbstractItemView *view, int start, int end);
 
-
-	void click(FTListClicker *clicker, int maxItems = 10);
+	void onDrawTextItem(QWidget *widget, const QPointF &p, const QTextItem &ti);
+	void onPaint(QWidget *w);
 
 	int rowCount();
 	QString value(int row, int col);
 	int indexOfColumn(QString column);
-	void trace(QAbstractItemModel *model, int start, int end);
+	int indexOfRow(QString value);
+	static void dump(QAbstractItemModel *model, int start, int end);
+
+	void dblClick(int row, int col);
+	void click(int row, int col, float subX=0.3, float subY=0.3);
+
+	void setPainterMode(bool painterMode);
 
 	QAbstractItemView *view();
 	QAbstractItemModel *model();
 
+	int paintedCount(){ return _items.count();}
 signals:
 	void listUpdatedEvent();
-	void clickSig(FTListClicker *filter);
-protected slots:
-	int doClick(FTListClicker *filter);
-public:
-	void dblClick(int row, int col);
-	int _maxItems;
+protected:
+	bool _painterMode;
+	bool _paintDone;
+	QMap<int, QString> _items;
 };
 #endif FTLIST_H

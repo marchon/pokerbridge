@@ -150,12 +150,11 @@ public:
 void QHookPainter::_end()
 {
 	NO_REENT_START(end)
-		if(device()->devType()==QInternal::Widget)
+		if(0!=QWidgetHooks::paintDone)
+		if(device() && device()->devType()==QInternal::Widget)
 		{
 			QWidget *w = static_cast<QWidget*>(device());
-			
-			if(0!=QWidgetHooks::paintDone)
-				(*QWidgetHooks::paintDone)(w);
+			(*QWidgetHooks::paintDone)(w);
 		}
 	NO_REENT_END(end)
 	QPainter::end();
@@ -220,11 +219,11 @@ bool QWidgetHooks::installFilter()
 	QCoreApplication *app = QCoreApplication::instance();
 	if(app)
 	{
-		qLog(Info)<<"installing filter";
+		//qLog(Info)<<"installing filter";
 		filter = new QWidgetEventFilter();
 		filter->moveToThread(app->thread());
 		app->installEventFilter(filter);
-		qLog(Info)<<"event filter installed";
+		//qLog(Info)<<"event filter installed";
 		return true;
 	}
 	return false;

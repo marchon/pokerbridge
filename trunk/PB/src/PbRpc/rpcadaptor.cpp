@@ -6,6 +6,8 @@
 #include "json.h"
 #include "rpcchannel.h"
 
+const char *RpcUrl::anyHost = "*";
+
 class RpcSignalIntercepter : public QSignalIntercepter
 {
 public:
@@ -19,12 +21,40 @@ protected:
 };
 
 
-RpcAdaptor::RpcAdaptor(QObject *parent)
+RpcAdaptor::RpcAdaptor( QObject *parent)
 	: QObject(parent)
 {
-	_conn = 0;
-	setAutoRelaySignals(true);
-	spySignals();
+	_adaptParent = false;
+}
+
+void RpcAdaptor::adaptParent()
+{
+	_adaptParent = true;
+}
+
+bool RpcAdaptor::isAdaptParent()
+{
+	return _adaptParent;
+}
+
+void RpcAdaptor::proxyInit(const RpcUrl &rurl)
+{
+	setRemoteUrl(rurl);
+	connection()->registerProxy(rurl.toString(), this);
+	setObjectName(rurl.toString());
+}
+
+QObject *RpcAdaptor::findProxy(const QString &path)
+{
+	return connection()->findProxy(path);
+}
+
+void RpcAdaptor::init(const QString &path)
+{
+	setPath(path);
+	_adaptParent = true;
+	spySignals(this);
+	connection()->registerObject(path, this);
 }
 
 RpcAdaptor::~RpcAdaptor()
@@ -35,11 +65,10 @@ RpcAdaptor::~RpcAdaptor()
 
 QObject *RpcAdaptor::target()
 {
-	if(!qstrcmp(metaObject()->className(),"RpcAdaptor"))
-		return parent();
-	return this;
+	return _adaptParent ? parent() : this;
 }
 
+/*
 void RpcAdaptor::setAutoRelaySignals(bool enable)
 {
     const QMetaObject *us = metaObject();
@@ -61,11 +90,11 @@ void RpcAdaptor::setAutoRelaySignals(bool enable)
 			connected = QObject::connect(target(), sig, sig) || connected;
     }
     //d_func()->autoRelaySignals = connected;
-}
+}*/
 
-void RpcAdaptor::spySignals()
+void RpcAdaptor::spySignals(QObject *target)
 {
-    const QMetaObject *them = target()->metaObject();
+    const QMetaObject *them = target->metaObject();
 	for(int idx=0;idx<them->methodCount();idx++)
 	{
 		QMetaMethod mm = them->method(idx);
@@ -73,133 +102,135 @@ void RpcAdaptor::spySignals()
             continue;
 		QByteArray sig = QMetaObject::normalizedSignature(mm.signature());
 		sig.prepend(QSIGNAL_CODE + '0');
-		QSignalIntercepter *si = new RpcSignalIntercepter(target(), sig, this);
+		QSignalIntercepter *si = new RpcSignalIntercepter(target, sig, this);
+//		qLog(Debug)<<"signalspy:"<<sig;
 	}
 }
 
-
-
-bool RpcAdaptor::signalMessage(QVariantMap msg, RpcChannel *ch)
+bool RpcAdaptor::invokeMethod(const QByteArray &method, const QVariantList &args)
 {
-	QString sender = msg.value("sender").toString();
-	QString signal = msg.value("method").toString();
-	QVariantList params = msg.value("params").toList();
-
-	Q_ASSERT(_senderPath.isEmpty());
-	QByteArray member = _subscribed.value(QPair<QString,QByteArray>(sender, signal.toAscii()),QByteArray());
-	if(!member.isEmpty())
-	{
-		QSlotInvoker invoker(target(), member);
-		if(!invoker.memberPresent())
-		{
-			qLog(Debug)<<" member "<<member<<" not found!";
-			return false;
-		}
-		_senderPath = sender;
-		_senderChannel = ch;
-		invoker.invoke(params);
-		_senderPath = "";
-		_senderChannel = 0;
-		return true;
-	}else{
-		qLog(Debug)<<" sender "+sender+" emited "+signal+" with no subscribers";
-	}
-	return false;
-}
-
-bool RpcAdaptor::invokeMessage(QVariantMap msg, RpcChannel *ch)
-{
-	QString sender = msg.value("sender").toString();
-	QString method = msg.value("method").toString();
-	QVariantList params = msg.value("params").toList();
-
-	QSlotInvoker invoker(target(), method.toLatin1());
+	QSlotInvoker invoker(this, method);
 	if(!invoker.memberPresent())
 	{
-		qLog(Debug)<<" member "<<method<<" not found!";
+		if(_adaptParent)
+		{
+			QSlotInvoker invoker2(parent(),method);
+			if(!invoker2.memberPresent())
+			{
+				qLog(Debug)<<"RpcAdaptor:: member "<<method<<" not found in "<<parent()<< " or "<<this;
+				return false;
+			}
+			invoker2.invoke(args);
+			return true;
+		}else
+			qLog(Debug)<<"RpcAdaptor:: member "<<method<<" not found in "<<this;
 		return false;
 	}
-	_senderPath = sender;
-	_senderChannel = ch;
-	invoker.invoke(params);
-	_senderPath = "";
-	_senderChannel = 0;
+	invoker.invoke(args);
 	return true;
 }
 
-
-QString RpcAdaptor::path()
-{
-	return _conn ? _conn->pathOf(target()):"";
-}
-
-void RpcAdaptor::activated(const QByteArray &method, const QList<QVariant>& args)
-{
-	QVariantMap msg;
-	msg["method"] = method;
-	msg["params"] = args;
-	msg["sender"] = path();
-	sendMessage(msg);
-}
-
-void RpcAdaptor::sendMessage(QVariantMap map, RpcChannel *ch)
-{
-	_conn->sendMessage(map, ch);
-}
-
-bool RpcAdaptor::invoke(const QString &remotePath, const QByteArray &method, const QVariant &val0, const QVariant &val1 )
+bool RpcAdaptor::remoteCall(const QByteArray &method, const QVariant &val0, const QVariant &val1 )
 {
 	QList<QVariant> args;
 	if(val0.type()!=QVariant::Invalid)
 		args.append(val0);
 	if(val1.type()!=QVariant::Invalid)
 		args.append(val1);
-	return invoke1(remotePath, method, args);
+	return remoteCall(method, args);
 }
 
-bool RpcAdaptor::invoke1(const QString &remotePath, const QByteArray &method, const QList<QVariant> &args)
+bool RpcAdaptor::remoteCall(const QByteArray &method, const QList<QVariant> &args)
 {
-	QVariantMap msg;
+	/*QVariantMap msg;
 	msg["method"] = method;
 	msg["params"] = args;
 	msg["sender"] = path();
 	msg["target"] = remotePath;
-	sendMessage(msg);
+	
+	sendMessage(msg);*/
+	connection()->remoteCall(remoteUrl(), method, args, path());
 	return true;
 }
 
-QString RpcAdaptor::senderPath()
+
+const QString &RpcAdaptor::path() const
 {
-	return _senderPath;
+	return _path;
 }
 
-RpcChannel *RpcAdaptor::senderChannel()
+RpcUrl RpcAdaptor::url() const
 {
-	return _senderChannel;
+	return RpcUrl(path(), connection()->localHost());
 }
 
-QString RpcAdaptor::senderHost()
+void RpcAdaptor::setPath(const QString &path)
 {
-	RpcChannel *ch = senderChannel();
-	if(ch)
-		return ch->remoteUrl();
-	return "";
+	_path = path;
+}
+
+const RpcUrl &RpcAdaptor::remoteUrl() const
+{
+	return _remoteUrl;
+}
+
+void RpcAdaptor::setRemoteUrl(const RpcUrl &url)
+{
+	_remoteUrl = url;
+}
+
+RpcConnection *RpcAdaptor::connection() const
+{
+	return RpcConnection::instance();
+}
+/*
+void RpcAdaptor::setConnection(RpcConnection *conn)
+{
+	_conn=conn;
+}
+*/
+
+void RpcAdaptor::activated(const QByteArray &member, const QList<QVariant>& args)
+{
+/*	QVariantMap msg;
+	msg["method"] = method;
+	msg["params"] = args;
+	msg["sender"] = path();
+	sendMessage(msg);
+*/
+	// delegate to connection 
+	QByteArray name = member;
+	if ( member.size() > 0 && member[0] >= '0' && member[0] <= '9' )
+		name=member.mid(1);
+	connection()->remoteSignal(name, args, path());
+}
+
+
+
+const RpcUrl &RpcAdaptor::remoteSender()
+{
+	return connection()->remoteSender();
 }
 
 RpcAdaptor *RpcAdaptor::get(QObject *obj)
 {
+	// if obj is RpcAdaptor, then object is adapted via inheritance
 	RpcAdaptor *a = qobject_cast<RpcAdaptor*>(obj);
 	if(0==a)
 		a=obj->findChild<RpcAdaptor*>();
-//	if(0==a)
-//		a=new RpcAdaptor(obj);
 	return a;
 }
 
-bool RpcAdaptor::connect(const char *path, const char *signal, QObject *receiver, const char*member)
+bool RpcAdaptor::connect(const RpcUrl &remoteUrl, const char *signal, const char*member)
 {
-	QByteArray sig = QMetaObject::normalizedSignature(member);
-	_subscribed.insert(QPair<QString,QByteArray>(path, signal), sig);
+	QByteArray memberSignature = QMetaObject::normalizedSignature(member);
+	QByteArray signalName = QMetaObject::normalizedSignature(signal);
+	if ( signalName.size() > 0 && signalName[0] >= '0' && signalName[0] <= '9' )
+		signalName=signalName.mid(1);
+
+	_subscribed.insert(RpcMethod(remoteUrl, signalName), memberSignature);
+
+	qLog(Debug)<<"connecting "<<remoteUrl.toString()<<"::"<<signalName<<" to "<<memberSignature;
 	return true;
 }
 
@@ -210,25 +241,24 @@ void RpcAdaptor::serialize(QVariantMap &map, QObject *obj, bool read)
 		ObjectVariant::variantToObject(map, obj);
 	else
 		ObjectVariant::objectToVariant(map, obj);
-	
-	/*if(read)
+}
+
+
+const char *RpcAdaptor::subscriber(const RpcUrl &remoteUrl, const char *signal)
+{
+	Q_FOREACH(const RpcMethod &m, _subscribed.keys())
 	{
-		QVariantList list = map.value("children");
-		Q_FOREACH(QVariant v, list)
-		{
-			QVariantMap vMap = v.toMap();
-			RpcAdaptor*adapt = RpcAdaptor::get(child);
-			adapt->serialize(list.last(), obj, true);
-		}
-	}else{
-		QVariantList list;
-		Q_FOREACH(QObject *child, children())
-		{
-			list.append(QVariantMap());
-			RpcAdaptor*adapt = RpcAdaptor::get(child);
-			adapt->serialize(list.last(), obj, false);
-		}
-		if(list.size()>0)
-			map["children"] = list;
-	}*/
+		if(remoteUrl.match(m))
+			if(m.method == signal)
+				return _subscribed[m];
+	}
+	return 0;
+}
+
+void RpcAdaptor::dumpSubscribers()
+{
+	Q_FOREACH(const RpcMethod &m, _subscribed.keys())
+	{
+		qLog(Debug)<<"  subscribed to "<<m.method<<" from "<<m.toString()<<", slot="<<_subscribed.value(m);
+	}
 }

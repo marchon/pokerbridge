@@ -6,6 +6,7 @@
 #include "ftwidgethook.h"
 #include "ftbutton.h"
 #include "pbseats.h"
+#include "pbgameoptions.h"
 
 class FTPlayer 
 {
@@ -15,7 +16,7 @@ class FTPlayer
 
 class QHUDWidget;
 class PBHandInfo;
-
+class FTTables;
 class PBTable;
 class FTDlg : public FTWidgetHook
 {
@@ -87,6 +88,8 @@ public:
 	void onDrawTextItem(QWidget *widget, const QPointF &p, const QTextItem &ti);
 
 	void onPaint(QWidget *widget);
+
+	virtual void _widgetClosing();
 public:
 	bool parseActionButton(const QString &text, const QString &prefix, double &amount);
 	void setActionButton(const QString &id, QWidget *w, double amount);
@@ -111,6 +114,8 @@ protected:
 public:
 	void setPlayerAtSeat(int seat, QString player, double stake, bool isSitout);
 	void buttonSeat(int pos);
+	
+	FTTables *tables();
 
 	void _postSmallBlind(QString player, double amount);
 	void _postBigBlind(QString player, double amount);
@@ -137,6 +142,7 @@ public:
 	void _showCards(QString player, QString cards);
 	void _showHand(QString player, QString handValue);
 
+	virtual void timerEvent(QTimerEvent *e);
 protected slots:
 	void getChips_Dialog(QString question);
 
@@ -181,7 +187,10 @@ public:
 public:
 	QString tableId();
 	void setTableId(QString tableId);
-
+	
+	//QString tableStatus();
+	bool tourneyComplete(){ return _tourneyComplete; }
+	
 	QString handId();
 	void setHandId(QString handId);
 
@@ -194,12 +203,16 @@ public:
 	QString _handId;
 	QString heroId;
 	double actionAmount;
+	bool _tourneyComplete;
 public:
 	PBSeats *_seats;
+	PBTable *_table;
 
 	QList<FTActionButton*> actions;
 	QString _tourneyId;
 	QString _tableNo;
+	QString _tourneyStatus;
+	PBGameOptions _gameOpts;
 
 	FTActionButton checkBtn;
 	FTActionButton raiseBtn;

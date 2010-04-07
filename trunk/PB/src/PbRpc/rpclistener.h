@@ -19,12 +19,11 @@ public:
 
 signals:
 	void incomingMessage(QVariantMap msg, RpcChannel *ch);
+
 private Q_SLOTS:
 	void newConnection();
-	void connNewMessage(QVariantMap msg);
 private:
 	QTcpServer *_server;	
-	RpcRegistry *_reg;
 };
 
 #endif // RpcListener_H

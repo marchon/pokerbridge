@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'pbtable.h'
 **
-** Created: Sat 13. Mar 18:21:54 2010
+** Created: Mon 29. Mar 21:29:33 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -25,19 +25,21 @@ static const uint qt_meta_data_PBTable[] = {
        0,       // classname
        0,    0, // classinfo
        0,    0, // methods
-       2,   12, // properties
+       3,   12, // properties
        0,    0, // enums/sets
        0,    0, // constructors
 
  // properties: name, type, flags
       17,    8, 0x0009510b,
       33,   24, 0x0009510b,
+      53,   39, 0x00095009,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_PBTable[] = {
     "PBTable\0PBHandId\0handId\0PBSeats*\0seats\0"
+    "PBGameOptions\0gameOptions\0"
 };
 
 const QMetaObject PBTable::staticMetaObject = {
@@ -70,27 +72,28 @@ int PBTable::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: *reinterpret_cast< PBHandId*>(_v) = handId(); break;
         case 1: *reinterpret_cast< PBSeats**>(_v) = seats(); break;
+        case 2: *reinterpret_cast< PBGameOptions*>(_v) = gameOptions(); break;
         }
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::WriteProperty) {
         void *_v = _a[0];
         switch (_id) {
         case 0: setHandId(*reinterpret_cast< PBHandId*>(_v)); break;
         case 1: setSeats(*reinterpret_cast< PBSeats**>(_v)); break;
         }
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::ResetProperty) {
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::QueryPropertyDesignable) {
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::QueryPropertyScriptable) {
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::QueryPropertyStored) {
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::QueryPropertyEditable) {
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::QueryPropertyUser) {
-        _id -= 2;
+        _id -= 3;
     }
 #endif // QT_NO_PROPERTIES
     return _id;

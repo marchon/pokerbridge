@@ -20,7 +20,7 @@ void FTHandHistory::onStringAppend(const QString &self, const QString &s)
 		QString filtered = self;
 		filtered.remove(QChar::fromAscii(0x1d));
 		PBHandInfo hi;
-		hi.setGameType("unknown");
+		hi.setGameFamily("unknown");
 		bool ok = parseHandInfo(filtered, &hi);
 		emit handHistoryEvent(filtered, &hi);
 	}
@@ -48,7 +48,7 @@ bool FTHandHistory::parseHandInfo(const QString &history, PBHandInfo *result)
 
 		result->setBigBlind(bb);
 		result->setSmallBlind(sb);
-		result->setGameType(re.cap(4));
+		result->setGameFamily(re.cap(4));
 		return true;
 	}
 	return false;

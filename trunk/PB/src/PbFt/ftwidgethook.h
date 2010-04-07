@@ -32,6 +32,8 @@ public:
 	virtual void onRowsInserted(QAbstractItemView *view, int start, int end);	// rows inserted into the table
 	virtual void onClose(QWidget *w, QEvent *e);
 	virtual void onDestroy(QWidget *w, QEvent *e);
+
+	virtual void _widgetClosing();
 	//void deferWidgetFound();
 public slots:
 	void immediateClose();

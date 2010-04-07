@@ -653,7 +653,7 @@ bool JsonReader::parse()
 	QByteArray data = input->readAll();
 	QString s(data);
 
-	qLog(Debug)<<"JsonReader::parse"<<s<<endl;
+	qLog(Debug)<<"read:"<<s<<endl;
 
 	for(int i=0;i<s.size();i++)
 	{
@@ -680,21 +680,27 @@ bool JsonReader::parse()
 			if(c=='\\')
 				inEscape=true;
 		}
-	}
-	json.append(s);
-	if(started && braces==0)
-	{
-		started = false;
-		try{
-			QVariant value = JsonToVariant::parse(json);
-			qLog(Debug)<<"JsonReader::parse"<<value<<endl;
-			emit parsed(value.toMap());
-			return true;
-		}catch(JsonParseException &x)
+		json.append(c);
+		if(started && braces==0)
 		{
-			return false;
+			started = false;
+			bool result=true;
+			try{
+				QVariant value = JsonToVariant::parse(json);
+				json="";
+	//			qLog(Debug)<<"JsonReader::parse"<<value<<endl;
+				emit parsed(value.toMap());
+				result = true;
+			}catch(JsonParseException &x)
+			{
+				qLog(Debug)<<"failed to parse json "<<x.what();			
+				result = false;
+			}
+			json="";
 		}
+
 	}
+	return true;
 }
 
 QVariant JsonReader::lastParsed()
@@ -786,3 +792,19 @@ void ObjectVariant::variantToObject(const QVariantMap &map, QObject *obj)
 			p.write(obj, map[p.name()]);
 	}
 }
+
+QString ObjectVariant::toShortString(QVariantMap &map)
+{
+	QString result="(";
+	Q_FOREACH(QString key, map.keys())
+	{
+		if(result.isEmpty())
+			result.append(", ");
+		result.append(key);
+		result.append("=");
+		result.append(map.value(key).toString());
+	}
+	result.append(")");
+	return result;
+}
+

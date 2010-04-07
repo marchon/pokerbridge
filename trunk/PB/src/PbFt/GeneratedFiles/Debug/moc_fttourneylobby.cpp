@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'fttourneylobby.h'
 **
-** Created: Sat 13. Mar 18:21:59 2010
+** Created: Thu 1. Apr 18:25:08 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -24,7 +24,7 @@ static const uint qt_meta_data_FTTourneyLobby[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   12, // methods
+       4,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,6 +35,7 @@ static const uint qt_meta_data_FTTourneyLobby[] = {
 
  // slots: signature, parameters, type, tag, flags
       46,   15,   15,   15, 0x0a,
+      58,   15,   15,   15, 0x0a,
 
        0        // eod
 };
@@ -42,6 +43,7 @@ static const uint qt_meta_data_FTTourneyLobby[] = {
 static const char qt_meta_stringdata_FTTourneyLobby[] = {
     "FTTourneyLobby\0\0observeSig()\0"
     "observeClicked()\0doObserve()\0"
+    "tourneyLobbyClosing(FTWidgetHook*)\0"
 };
 
 const QMetaObject FTTourneyLobby::staticMetaObject = {
@@ -72,9 +74,10 @@ int FTTourneyLobby::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 0: observeSig(); break;
         case 1: observeClicked(); break;
         case 2: doObserve(); break;
+        case 3: tourneyLobbyClosing((*reinterpret_cast< FTWidgetHook*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }

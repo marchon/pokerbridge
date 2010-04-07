@@ -23,12 +23,15 @@ void FTLists::listUpdated(FTList *list)
 void FTLists::onRowsInserted(QAbstractItemView *view, int start, int end)
 {
 	FTList *alist = qobject_cast<FTList*>(hookFor(view));
+	QAbstractItemModel *model = view->model();
+	//qLog(Debug)<<"rowsInserted("<<start<<","<<end<<")"<<QTUtil::widgetInfo(view)<<", model "<<model->metaObject()->className()<<":"<<model->objectName();
+	//FTList::dump(model,start, end);
+
 	if(0==alist)
 	{
-		//qLog(Debug)<<"LIST-WIDGET "<<QTUtil::widgetInfo(view);
-
-		QAbstractItemModel *model = view->model();
 		QString modelClass = model->metaObject()->className();
+		
+		//qLog(Info)<<"LIST-WIDGET "<<QTUtil::widgetInfo(view)<<" MODEL: "<<modelClass;
 
 		if(start==0)
 		{
@@ -38,13 +41,44 @@ void FTLists::onRowsInserted(QAbstractItemView *view, int start, int end)
 				alist->setObjectName(modelClass);
 			}
 		}
+
+		if(view->objectName()=="list_1")
+		{
+			alist = new FTList(view, this);
+			alist->setObjectName("filter1");
+			alist->setPainterMode(true);
+
+		}else if(view->objectName()=="list_2")
+		{
+			alist = new FTList(view, this);
+			alist->setObjectName("filter2");
+			alist->setPainterMode(true);
+		}else if(view->objectName()=="list_3")
+		{
+			alist = new FTList(view, this);
+			alist->setObjectName("filter3");
+			alist->setPainterMode(true);
+		}else if(view->objectName()=="list_4")
+		{
+			alist = new FTList(view, this);
+			alist->setObjectName("filter4");
+			alist->setPainterMode(true);
+		}else if(view->objectName()=="list_5")
+		{
+			alist = new FTList(view, this);
+			alist->setObjectName("filter5");
+			alist->setPainterMode(true);
+		}
+
+
+		//qLog(Debug)<<"rowsInserted("<<start<<","<<end<<")"<<QTUtil::widgetInfo(view)<<", model "<<model->metaObject()->className()<<":"<<model->objectName();
 	}
 
 
 	if(alist)
 		alist->onRowsInserted(view, start, end);
-
-	//qLog(Debug)<<"rowsInserted("<<start<<","<<end<<")"<<QTUtil::widgetInfo(view)<<", model "<<model->metaObject()->className()<<":"<<model->objectName();
+	
+	
 }
 
 void FTLists::onWidgetSetVisible(QWidget *w, bool isVisible)
@@ -65,14 +99,16 @@ void FTLists::onWidgetSetVisible(QWidget *w, bool isVisible)
 
 FTList::FTList(QWidget *widget, QObject *parent) : FTWidgetHook(widget, parent)
 { 
-	_maxItems = 10;	
-	connect(this, SIGNAL(clickSig(FTListClicker*)), this, SLOT(doClick(FTListClicker*))/*, Qt::QueuedConnection*/);
+	_painterMode = false;
+	_paintDone = false;
 }
 
 
 
 void FTList::onRowsInserted(QAbstractItemView *view, int start, int end)
 {
+	_items.clear();
+
 	QAbstractItemModel *model = view->model();
 //	qLog(Debug)<<QTUtil::objectInfo(model);
 	
@@ -88,6 +124,7 @@ void FTList::onRowsInserted(QAbstractItemView *view, int start, int end)
 
 //	trace(model, start, end);
 
+
 	emit listUpdatedEvent();
 	FTLists *lists = qobject_cast<FTLists*>(parent());
 	if(0!=lists)
@@ -95,8 +132,11 @@ void FTList::onRowsInserted(QAbstractItemView *view, int start, int end)
 }
 
 
-void FTList::trace(QAbstractItemModel *model, int start, int end)
+void FTList::dump(QAbstractItemModel *model, int start, int end)
 {
+	if(!model)
+		return;
+
 	QString s = "Header:";
 	for(int j=0;j<model->columnCount();j++)
 	{
@@ -119,7 +159,7 @@ void FTList::trace(QAbstractItemModel *model, int start, int end)
 				s+=" ";
 		
 			}
-			qLog(Debug)<<s;
+			qLog(Debug)<<i<<":"<<s;
 		}
 	}
 }
@@ -135,9 +175,16 @@ int FTList::rowCount()
 	return model()->rowCount();
 }
 
+
 QString FTList::value(int row, int col)
 {
-	return model()->data(model()->index(row, col)).toString();
+	QString v = model()->data(model()->index(row, col)).toString();
+	if(!v.isEmpty())
+		return v;
+	if(_painterMode)
+		if(row>=0 && row<_items.size())
+			return _items.values()[row];
+	return "";
 }
 
 int FTList::indexOfColumn(QString column)
@@ -152,6 +199,18 @@ int FTList::indexOfColumn(QString column)
 	return -1;
 }
 
+int FTList::indexOfRow(QString v)
+{
+	QAbstractItemModel *amodel = model();
+	for(int j=0;j<amodel->rowCount();j++)
+	{
+		QString row = value(j,0);
+		if(row==v)
+			return j;
+	}
+	return -1;
+}
+
 
 class QAccessItemView : public QAbstractItemView
 {
@@ -161,13 +220,6 @@ public:
 		emit QAbstractItemView::doubleClicked(index);
 	}
 };
-
-void FTList::click(FTListClicker *filter, int maxItems)
-{
-	_maxItems = maxItems;
-	emit clickSig(filter);
-}
-
 QAbstractItemView *FTList::view()
 {
 	QAbstractItemView *view = qobject_cast<QAbstractItemView*>(widget());
@@ -182,14 +234,6 @@ QAbstractItemModel *FTList::model()
 	return amodel;
 }
 
-int FTList::doClick(FTListClicker *filter)
-{
-	QAbstractItemModel *amodel = model();
-	QAbstractItemView *aview = view();
-	
-	filter->click(this);
-	return 0;	
-}
 static int n=0;
 void FTList::dblClick(int row, int col)
 {
@@ -218,52 +262,67 @@ void FTList::dblClick(int row, int col)
 			pt,widget->mapToGlobal(pt), Qt::LeftButton,Qt::LeftButton,0);
 	QApplication::postEvent(widget, e);
 
-
-
-
-//	QEvent *e = QMouseEvent::createExtendedMouseEvent(QEvent::MouseButtonDblClick,
-//			pt,widget()->mapToGlobal(pt), Qt::LeftButton,Qt::LeftButton,0);
-//	QCoreApplication::postEvent(widget(), e);
 }
 
-
-
-void FTDefaultListClicker::add(QString column, QString value)
+void FTList::click(int row, int col, float subX, float subY)
 {
-	_filters[column].append(value);
+	QModelIndex index = model()->index(row,col);
+
+	QRect rc = view()->visualRect(index);
+	QPoint pt(rc.x()+rc.width()*subX,rc.y()+rc.height()*subY);
+	
+	//qLog(Info)<<"click "<<objectName()<<" "<<pt.x()<<":"<<pt.y();
+
+	QWidget *widget = (QWidget*) view();
+	widget = widget->childAt(10,10);
+
+	QEvent *e = QMouseEvent::createExtendedMouseEvent(QEvent::MouseMove,
+			pt,widget->mapToGlobal(pt), Qt::LeftButton,Qt::LeftButton,0);
+	QApplication::postEvent(widget, e);
+
+
+	e = QMouseEvent::createExtendedMouseEvent(QEvent::MouseButtonPress,
+			pt,widget->mapToGlobal(pt), Qt::LeftButton,Qt::LeftButton,0);
+	QApplication::postEvent(widget, e);
+
+	e = QMouseEvent::createExtendedMouseEvent(QEvent::MouseButtonRelease,
+			pt,widget->mapToGlobal(pt), Qt::LeftButton,Qt::LeftButton,0);
+	QApplication::postEvent(widget, e);
+
 }
 
-void FTDefaultListClicker::click(FTList *list)
+void FTList::onDrawTextItem(QWidget *w, const QPointF &p, const QTextItem &ti)
 {
-	int totalClicked = 0;
-	int filteredRow = 0;
-	for(int row=0; row<list->rowCount(); row++)
+	FTWidgetHook::onDrawTextItem(w, p, ti);
+	
+	if(widget() && (widget()->isAncestorOf(w)))
 	{
-		if(filter(list, row))
+		if(_paintDone)
 		{
-			if(_index<0 || _index==filteredRow)
-				list->dblClick(row,0);
-			filteredRow++;
+			_paintDone=false;
+			_items.clear();
+			//qLog(Debug)<<"ITEMSCLEAR "<<QTUtil::widgetInfo(w);
 		}
+		//qLog(Debug)<<"DT: "<<p<<":"<<ti.text()<<QTUtil::widgetInfo(w);
+		if(_painterMode)
+			_items[p.y()] = ti.text();
 	}
 }
-bool FTDefaultListClicker::filter(FTList *list, int row)
+
+void FTList::setPainterMode(bool pm)
 {
-	bool include = false;
-	bool exclude = false;
-	Q_FOREACH(QString scol, _filters.keys())
+	_painterMode = pm;
+}
+
+void FTList::onPaint(QWidget *w)
+{
+	FTWidgetHook::onPaint(w);
+	if(widget() && (widget()->isAncestorOf(w)))
 	{
-		QList<QString> &filts = _filters[scol];
-		int col = list->indexOfColumn(scol);
-		if(col>=0)
-		{
-			if(filts.indexOf(list->value(row, col))>=0)
-				include=true;
-			else 
-				exclude=true;
-		}
+		//qLog(Debug)<<"PAINTDONE "<<QTUtil::widgetInfo(w);
+		FTLists *lists = qobject_cast<FTLists*>(parent());
+		if(0!=lists)
+			lists->paintDone(this);
+		_paintDone = true;
 	}
-	if(!(include && !exclude))
-		return false;
-	return true;
 }

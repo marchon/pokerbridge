@@ -6,7 +6,7 @@
 #include "fthandhistory.h"
 #include "ftlobby.h"
 #include "ftstopwatch.h"
-
+#include "mdump.h"
 #include "ftmainthread.h"
 
 HMODULE FTMainThread::hInjectionLib;
@@ -26,6 +26,8 @@ void FTMainThread::run()
 	waitMutex.lock();
 	FTLobby::lobbyCreated.wait(&waitMutex);
 	waitMutex.unlock();
+
+
 
 	QWidgetHooks::installFilter();	// do it after lobby interception
 
@@ -54,6 +56,7 @@ void FTMainThread::run()
 	qLog(Info) << "PTFB.DLL("<<hInjectionLib<<") terminating("<<exitValue<<")";
 
 	FTPanel::destroyInstance();
+
 	//FTLobby::instance();
 	qLog(Info) << "Main thread exit";
 }

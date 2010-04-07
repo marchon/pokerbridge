@@ -4,6 +4,7 @@
 #include "pbseatedplayer.h"
 #include "pbseats.h"
 
+
 PBTable::PBTable(QObject *parent) : QObject(parent)
 {
 	setSeats(new PBSeats(this));
@@ -25,7 +26,13 @@ PBSeats *PBTable::seats()
 {
 	return _seats;
 }
+
 void PBTable::setSeats(PBSeats *seats)
 {
 	_seats = seats;
+}
+
+PBGameOptions &PBTable::gameOptions()
+{
+	return _gameOptions;
 }

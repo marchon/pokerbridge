@@ -68,6 +68,7 @@ void QPBLog::install()
 
 void QPBLog::uninstall()
 {
+	logFile.close();
 	qInstallMsgHandler(old);
 }
 

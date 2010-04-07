@@ -18,7 +18,8 @@ class FTTasks : public QObject
 public:
 	FTTasks(QObject *parent=0);
 
-	FTTask *tableOpener();
+	FTTask *tourneyOpener();
+	FTTask *newTourneyOpener();
 public slots:
 	void stop();
 };

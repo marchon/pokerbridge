@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'ftlist.h'
 **
-** Created: Sat 13. Mar 18:21:59 2010
+** Created: Wed 31. Mar 16:08:18 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -24,19 +24,21 @@ static const uint qt_meta_data_FTLists[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   12, // methods
+       2,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
 
  // signals: signature, parameters, type, tag, flags
       14,    9,    8,    8, 0x05,
+      40,    9,    8,    8, 0x05,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FTLists[] = {
     "FTLists\0\0list\0listUpdatedEvent(FTList*)\0"
+    "paintDoneEvent(FTList*)\0"
 };
 
 const QMetaObject FTLists::staticMetaObject = {
@@ -65,9 +67,10 @@ int FTLists::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: listUpdatedEvent((*reinterpret_cast< FTList*(*)>(_a[1]))); break;
+        case 1: paintDoneEvent((*reinterpret_cast< FTList*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }
@@ -78,31 +81,32 @@ void FTLists::listUpdatedEvent(FTList * _t1)
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
+
+// SIGNAL 1
+void FTLists::paintDoneEvent(FTList * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
 static const uint qt_meta_data_FTList[] = {
 
  // content:
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   12, // methods
+       1,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
 
  // signals: signature, parameters, type, tag, flags
        8,    7,    7,    7, 0x05,
-      34,   27,    7,    7, 0x05,
-
- // slots: signature, parameters, type, tag, flags
-      63,   27,   59,    7, 0x09,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FTList[] = {
-    "FTList\0\0listUpdatedEvent()\0filter\0"
-    "clickSig(FTListClicker*)\0int\0"
-    "doClick(FTListClicker*)\0"
+    "FTList\0\0listUpdatedEvent()\0"
 };
 
 const QMetaObject FTList::staticMetaObject = {
@@ -131,12 +135,9 @@ int FTList::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: listUpdatedEvent(); break;
-        case 1: clickSig((*reinterpret_cast< FTListClicker*(*)>(_a[1]))); break;
-        case 2: { int _r = doClick((*reinterpret_cast< FTListClicker*(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
         default: ;
         }
-        _id -= 3;
+        _id -= 1;
     }
     return _id;
 }
@@ -145,12 +146,5 @@ int FTList::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 void FTList::listUpdatedEvent()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, 0);
-}
-
-// SIGNAL 1
-void FTList::clickSig(FTListClicker * _t1)
-{
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 QT_END_MOC_NAMESPACE

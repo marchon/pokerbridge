@@ -4,12 +4,28 @@
 #include "ftlist.h"
 #include "fttourneylobby.h"
 #include "fthooks.h"
-
+#include "fttables.h"
+#include "fttable.h"
+#include "ftlobby.h"
 
 FTTourneys::FTTourneys(QWidget *w, QObject *parent) : FTWidgetHook(w, parent)
 {
-
+	new  RMessageAdaptor(this);
+	startTimer(10000);
 }
+
+void FTTourneys::setTables(FTTables *tables)
+{
+	_tables = tables;
+	connect(tables, SIGNAL(tableOpenedEvent(QString)), this,
+		SLOT(onTableOpenedEvent(QString)));
+}
+
+FTTables *FTTourneys::tables()
+{
+	return _tables;
+}
+
 
 FTTourneyLobby *FTTourneys::getTourneyLobby(const QString &tourneyId)
 {
@@ -42,8 +58,8 @@ QWidget *FTTourneys::tourneyFrame(QWidget *w, QString &tourneyId)
 	if(0!=tourneyWidget)
 	{
 		QString capt = tourneyWidget->windowTitle();
-		if(!parseTourneyCaption(capt, tourneyId));
-		return tourneyWidget;
+		if(parseTourneyCaption(capt, tourneyId))
+			return tourneyWidget;
 	}
 	return 0;
 }
@@ -88,10 +104,137 @@ void FTTourneys::onWidget(QWidget *w)
 
 void FTTourneys::tourneyLobbyOpened(FTTourneyLobby *lobby)
 {
+
 	emit tourneyLobbyOpenedEvent(lobby);
 }
 
-void FTTourneys::observeClicked(FTTourneyLobby *lobby)
+void FTTourneys::tourneyLobbyClosed(FTTourneyLobby *lobby)
 {
-	emit tourneyLobbyObserveClickedEvent(lobby);
+	emit tourneyLobbyClosedEvent(lobby);
+}
+
+
+void FTTourneys::tourneyStatusChanged(FTTourneyLobby *lobby)
+{
+	emit tourneyStatusChangedEvent(lobby);
+}
+
+void FTTourneys::onTableOpenedEvent(QString tableId)
+{
+	/*FTTable *tbl = _tables->getTable(tableId);
+	if(tbl->isTourney())
+	{
+		qLog(Debug)<<"TableOpened "<<tableId<<" tId="<<tbl->tourneyId();	
+		sendTourneyInfo(tbl->tourneyId());
+	}
+	*/
+}
+
+void FTTourneys::observeTourney(QString tourneyId)
+{
+	FTTourneyLobby *tl = getTourneyLobby(tourneyId);
+	if(tl)
+		tl->observe();
+	else
+		qLog(Debug)<<"FTTourneys::observeTourney: "<<tourneyId<<" lobby is not opened";
+}
+
+void FTTourneys::registerTourney(QString tourneyId)
+{
+
+}
+
+
+
+void FTTourneys::sendTourneyInfo(QString tourneyId)
+{
+	PBGameInfo gi;
+
+	gi.setOpenedTablesCount(0);
+	gi.setTablesMax(18);
+
+	FTTourneyLobby *tl = getTourneyLobby(tourneyId);
+	gi.setTourneyOpened(tl!=0 && tl->isAlive());
+
+	QString tourneyStatus = "Unknown";
+
+	if(tl)
+		tourneyStatus = tl->status();
+
+	FTTable *tbl = 0;
+	if(_tables)
+	{
+		tbl = _tables->tourneyTable(tourneyId);
+		gi.setOpenedTablesCount(_tables->tableCount());
+		if(tourneyStatus=="Unknown")
+			if(tbl)
+				if(tbl->tourneyComplete())
+					tourneyStatus="Complete";
+				else
+					tourneyStatus="Running";
+	}
+
+	bool tableOpened = (tbl!=0) && tbl->isAlive();
+
+	gi.setTableOpened(tableOpened);
+	gi.setTableId(tourneyId);
+	gi.setSiteId("FT");
+	gi.setTourneyTableId("1");
+
+	gi.setBigBlind(2);
+	gi.setSmallBlind(1);
+
+	int canJoin = (tourneyStatus=="Registering")?1:0;
+	gi.setCanJoin(canJoin);
+
+	int complete = (tourneyStatus=="Complete") || (tbl && tbl->tourneyComplete());
+
+	int canOpen = (tourneyStatus=="Seating" || tourneyStatus=="Running" )?1:0;
+	gi.setCanOpen(canOpen);
+
+	gi.setGameComplete(complete);
+
+	gi.setDriver(FTLobby::instance()->objectName());
+
+	RMessage msg("GameInfo");
+	msg.put(&gi);
+	msg.send(this);
+}
+
+int FTTourneys::tourneyLobbyCount()
+{
+	QList<FTTourneyLobby*> lobbies = qFindChildren<FTTourneyLobby*>(this, QRegExp(".*"));
+	return lobbies.size();
+
+}
+
+void FTTourneys::timerEvent(QTimerEvent *e)
+{
+	QSet<QString> tourneys;
+	
+	qLog(Debug)<<"Sending ping info about "<<tourneys.size()<<" tourneys";
+
+	QList<FTTourneyLobby*> lobbies = qFindChildren<FTTourneyLobby*>(this, QRegExp(".*"));
+	Q_FOREACH(FTTourneyLobby*tl, lobbies)
+	{
+		if(tl->ready()){
+			tourneys.insert(tl->tourneyId());
+		}
+	}
+	if(_tables)
+	{
+		QList<FTTable*> tables = qFindChildren<FTTable*>(_tables, QRegExp(".*"));
+		Q_FOREACH(FTTable *tbl, tables)
+		{
+			if(tbl->isTourney())
+			{
+				tourneys.insert(tbl->tourneyId());
+			}
+		}
+	}
+
+	Q_FOREACH(QString tid, tourneys)
+	{
+		sendTourneyInfo(tid);
+	}
 }

@@ -217,5 +217,7 @@ class PB_EXPORT ObjectVariant
 public:
 	static void objectToVariant(QVariantMap &map, QObject *obj);
 	static void variantToObject(const QVariantMap &map, QObject *obj);
+	static QString toShortString(QVariantMap &map);
 };
+
 #endif

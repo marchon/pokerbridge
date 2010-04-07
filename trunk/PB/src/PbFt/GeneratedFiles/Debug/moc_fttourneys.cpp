@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'fttourneys.h'
 **
-** Created: Sat 13. Mar 18:21:59 2010
+** Created: Fri 2. Apr 20:17:06 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -24,22 +24,31 @@ static const uint qt_meta_data_FTTourneys[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   12, // methods
+       6,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
 
  // signals: signature, parameters, type, tag, flags
-      18,   12,   11,   11, 0x05,
-      59,   12,   11,   11, 0x05,
+      15,   12,   11,   11, 0x05,
+      56,   12,   11,   11, 0x05,
+      97,   12,   11,   11, 0x05,
+
+ // slots: signature, parameters, type, tag, flags
+     148,  140,   11,   11, 0x0a,
+     186,  176,   11,   11, 0x0a,
+     210,  176,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_FTTourneys[] = {
-    "FTTourneys\0\0lobby\0"
-    "tourneyLobbyOpenedEvent(FTTourneyLobby*)\0"
-    "tourneyLobbyObserveClickedEvent(FTTourneyLobby*)\0"
+    "FTTourneys\0\0tl\0tourneyLobbyOpenedEvent(FTTourneyLobby*)\0"
+    "tourneyLobbyClosedEvent(FTTourneyLobby*)\0"
+    "tourneyStatusChangedEvent(FTTourneyLobby*)\0"
+    "tableId\0onTableOpenedEvent(QString)\0"
+    "tourneyId\0observeTourney(QString)\0"
+    "registerTourney(QString)\0"
 };
 
 const QMetaObject FTTourneys::staticMetaObject = {
@@ -68,10 +77,14 @@ int FTTourneys::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: tourneyLobbyOpenedEvent((*reinterpret_cast< FTTourneyLobby*(*)>(_a[1]))); break;
-        case 1: tourneyLobbyObserveClickedEvent((*reinterpret_cast< FTTourneyLobby*(*)>(_a[1]))); break;
+        case 1: tourneyLobbyClosedEvent((*reinterpret_cast< FTTourneyLobby*(*)>(_a[1]))); break;
+        case 2: tourneyStatusChangedEvent((*reinterpret_cast< FTTourneyLobby*(*)>(_a[1]))); break;
+        case 3: onTableOpenedEvent((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 4: observeTourney((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 5: registerTourney((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 2;
+        _id -= 6;
     }
     return _id;
 }
@@ -84,9 +97,16 @@ void FTTourneys::tourneyLobbyOpenedEvent(FTTourneyLobby * _t1)
 }
 
 // SIGNAL 1
-void FTTourneys::tourneyLobbyObserveClickedEvent(FTTourneyLobby * _t1)
+void FTTourneys::tourneyLobbyClosedEvent(FTTourneyLobby * _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void FTTourneys::tourneyStatusChangedEvent(FTTourneyLobby * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_END_MOC_NAMESPACE
