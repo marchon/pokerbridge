@@ -1,19 +1,22 @@
 #ifndef PBGAMEINFO_H
 #define PBGAMEINFO_H
 
-
+/*
 class PBGameInfo : public QObject
 {
 	Q_OBJECT
 
 	Q_PROPERTY(double smallBlind READ smallBlind WRITE setSmallBlind);
 	Q_PROPERTY(double bigBlind READ bigBlind WRITE setBigBlind);
+	Q_PROPERTY(QString site READ site WRITE setSite);
 public:
 	PBGameInfo(QObject *parent = 0) : QObject(parent)
 	{
 		_smallBlind = -1;
 	}
 
+	QString site();
+	void setSite(const QString &site);
 
 	double smallBlind();
 	void setSmallBlind(double sb);
@@ -33,7 +36,10 @@ protected:
 	double _bigBlind;
 	QString _gameType;
 	int _maxSeats;
+	QString _site;
 };
+*/
+#include "pbgameinfo.h"
 
 class PBHandInfo: public PBGameInfo
 {

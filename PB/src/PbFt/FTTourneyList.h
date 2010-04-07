@@ -11,7 +11,6 @@ public:
 	
 	bool parseBuyIn(QString sBuyin, PBTourneyInfo *ti);
 	bool parse(FTList *list, int row, PBTourneyInfo *ti);
-	void openTourneyLobby(FTListClicker *filter);
 public slots:
 	void onListUpdated();
 signals:

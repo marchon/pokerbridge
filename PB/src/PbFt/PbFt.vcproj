@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				OmitFramePointers="false"
-				AdditionalIncludeDirectories=".\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.;.\..\..\include;.\..\PbLib;$(QTDIR)\src\corelib\thread;..\PbRpc"
+				AdditionalIncludeDirectories=".\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.;.\..\..\include;.\..\PbLib;$(QTDIR)\src\corelib\thread;.\..\RMsg"
 				PreprocessorDefinitions="PB_LIB_EXPORTS,_WINDOWS,_DLL,NDEBUG"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="false"
@@ -112,7 +112,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.;.\..\..\include;.\..\PbLib;$(QTDIR)\src\corelib\thread;..\PbRpc"
+				AdditionalIncludeDirectories=".\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.;.\..\..\include;.\..\PbLib;$(QTDIR)\src\corelib\thread;.\..\RMsg"
 				PreprocessorDefinitions="PB_LIB_EXPORTS;WIN32;_DLL;_DEBUG;QT_CORELIB"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="false"
@@ -191,6 +191,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ftlistclicker.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ftlobby.cpp"
 				>
 			</File>
@@ -200,10 +204,6 @@
 			</File>
 			<File
 				RelativePath=".\ftpanel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\FTRegisterTourneys.cpp"
 				>
 			</File>
 			<File
@@ -228,6 +228,10 @@
 			</File>
 			<File
 				RelativePath=".\fttourneylobby.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\fttourneyopener.cpp"
 				>
 			</File>
 			<File
@@ -273,7 +277,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftbutton.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftbutton.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\ftbutton.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftbutton.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -284,7 +288,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftbutton.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftbutton.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftbutton.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -303,7 +307,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fthandhistory.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthandhistory.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fthandhistory.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthandhistory.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -314,7 +318,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fthandhistory.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthandhistory.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthandhistory.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -329,7 +333,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fthandwriter.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthandwriter.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fthandwriter.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthandwriter.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -340,7 +344,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fthandwriter.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthandwriter.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthandwriter.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -355,7 +359,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fthooks.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthooks.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fthooks.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthooks.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -366,7 +370,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fthooks.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthooks.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fthooks.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -381,7 +385,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftlist.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlist.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\ftlist.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlist.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -392,7 +396,33 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftlist.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlist.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlist.h&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\ftlistclicker.h"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\ftlistclicker.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlistclicker.h&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlistclicker.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -407,7 +437,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftlobby.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlobby.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\ftlobby.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlobby.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -418,7 +448,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftlobby.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlobby.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftlobby.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -433,7 +463,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftmainthread.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftmainthread.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\ftmainthread.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftmainthread.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -444,7 +474,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftmainthread.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftmainthread.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftmainthread.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -459,7 +489,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftpanel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftpanel.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\ftpanel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftpanel.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -470,33 +500,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftpanel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftpanel.h&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\FTRegisterTourneys.h"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\FTRegisterTourneys.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\FTRegisterTourneys.h&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\FTRegisterTourneys.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\FTRegisterTourneys.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftpanel.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -511,7 +515,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftstopwatch.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftstopwatch.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\ftstopwatch.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftstopwatch.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -522,7 +526,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftstopwatch.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftstopwatch.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftstopwatch.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -537,7 +541,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fttable.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttable.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fttable.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttable.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -548,7 +552,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fttable.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttable.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttable.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -563,7 +567,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fttables.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttables.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fttables.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttables.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -574,7 +578,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fttables.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttables.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttables.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -589,7 +593,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DLL -D_WINDLL -D_WINDOWS -DNDEBUG -DPB_LIB_EXPORTS -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\PbRpc\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttasks.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fttasks.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttasks.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -600,7 +604,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\PbRpc\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttasks.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttasks.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -615,7 +619,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\FTTourneyList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\FTTourneyList.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\FTTourneyList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\FTTourneyList.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -626,7 +630,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\FTTourneyList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\FTTourneyList.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\FTTourneyList.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -641,7 +645,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fttourneylobby.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneylobby.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fttourneylobby.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneylobby.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -652,7 +656,33 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fttourneylobby.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneylobby.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneylobby.h&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\fttourneyopener.h"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fttourneyopener.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneyopener.h&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing $(InputFileName)..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneyopener.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -667,7 +697,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fttourneys.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneys.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\fttourneys.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneys.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -678,7 +708,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\fttourneys.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneys.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\fttourneys.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -693,7 +723,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftwidgethook.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftwidgethook.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -D_WINDOWS -D_DLL -DNDEBUG -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\RMsg\.&quot; &quot;.\ftwidgethook.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftwidgethook.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -704,7 +734,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DPB_LIB_EXPORTS -DWIN32 -D_DLL -D_DEBUG -DQT_CORELIB -D_WINDLL  -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\..\PbRpc\.&quot; &quot;.\ftwidgethook.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftwidgethook.h&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_DEBUG -D_DLL -D_WINDLL -DPB_LIB_EXPORTS -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\RMsg\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\ftwidgethook.h&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -794,6 +824,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\GeneratedFiles\Release\moc_ftlistclicker.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\GeneratedFiles\Release\moc_ftlobby.cpp"
 					>
 					<FileConfiguration
@@ -819,18 +861,6 @@
 				</File>
 				<File
 					RelativePath=".\GeneratedFiles\Release\moc_ftpanel.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GeneratedFiles\Release\moc_FTRegisterTourneys.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -903,6 +933,18 @@
 				</File>
 				<File
 					RelativePath=".\GeneratedFiles\Release\moc_fttourneylobby.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GeneratedFiles\Release\moc_fttourneyopener.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -1004,6 +1046,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_ftlistclicker.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\GeneratedFiles\Debug\moc_ftlobby.cpp"
 					>
 					<FileConfiguration
@@ -1029,18 +1083,6 @@
 				</File>
 				<File
 					RelativePath=".\GeneratedFiles\Debug\moc_ftpanel.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GeneratedFiles\Debug\moc_FTRegisterTourneys.cpp"
 					>
 					<FileConfiguration
 						Name="Release|Win32"
@@ -1100,7 +1142,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\GeneratedFiles\Debug\moc_fttourneylist.cpp"
+					RelativePath=".\GeneratedFiles\Debug\moc_FTTourneyList.cpp"
 					>
 					<FileConfiguration
 						Name="Release|Win32"
@@ -1113,6 +1155,18 @@
 				</File>
 				<File
 					RelativePath=".\GeneratedFiles\Debug\moc_fttourneylobby.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\GeneratedFiles\Debug\moc_fttourneyopener.cpp"
 					>
 					<FileConfiguration
 						Name="Release|Win32"

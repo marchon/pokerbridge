@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "fttasks.h"
-#include "ftregistertourneys.h"
+#include "fttourneyopener.h"
 
 FTTasks::FTTasks(QObject *parent) : QObject(parent)
 {
-
+	new RMessageAdaptor(this);
 }
 
 void FTTasks::stop()
@@ -17,10 +17,18 @@ void FTTasks::stop()
 	}
 }
 
-FTTask *FTTasks::tableOpener()
+FTTask *FTTasks::tourneyOpener()
 {
-	FTRegisterTourneys *rt = qFindChild<FTRegisterTourneys*>(this);
-	if(!rt)
-		rt= new FTRegisterTourneys(this);
-	return rt;
+	FTTourneyOpener *tsk= qFindChild<FTTourneyOpener*>(this);
+	if(tsk)
+		return tsk;
+	return newTourneyOpener();
 }
+
+FTTask *FTTasks::newTourneyOpener()
+{
+	FTTourneyOpener *tsk = new FTTourneyOpener(this);
+	return tsk;
+}
+
+

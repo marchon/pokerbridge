@@ -1,14 +1,26 @@
 #pragma once
-class RpcConnection;
-class PBRemoteLobbies;
+class RMessageQueue;
 
-class PBServerApp : public QCoreApplication
+
+class PBLauncher;
+class PBLobbyDriver;
+class PBServer : public QObject
 {
 	Q_OBJECT
 public:
-	PBServerApp(int argc, char*argv[]);
+	PBServer(QObject *parent=0);
+	QSettings *settings();
+	
+	void checkDeads();
+	int assignIndex(PBLobbyDriver *drv);
+
+public slots:
+	void queueOpened(RMessageQueue *queue);
 
 protected:
-	QPointer<PBRemoteLobbies> _remoteLobbies;
-	QPointer<RpcConnection> _conn;
+	int _agentsCount;
+	QSettings *_settings;
+	PBLauncher *_launcher;
 };
+
+

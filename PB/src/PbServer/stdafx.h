@@ -21,3 +21,4 @@
 
 #include "qpblog.h"
 
+#include "rmsg.h"

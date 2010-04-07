@@ -5,6 +5,8 @@
 extern "C"{
 #endif
 
+#include "EasyHook.h"
+
 extern void __declspec(dllexport) APIENTRY NativeInjectionEntryPoint(REMOTE_ENTRY_INFO* pInfo);
 
 extern BOOL EasyHook(LPCSTR module, LPSTR procName, LPVOID hookProc, HOOK_TRACE_INFO *pInfo);

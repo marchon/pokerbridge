@@ -27,7 +27,7 @@ void FTHandWriter::onHandHistory(const QString &s, PBHandInfo *hi)
 {
 	QString fileName = historyDir();
 
-	qLog(Debug)<<"onHandHistory "<<fileName;
+	qLog(DebugHand)<<"onHandHistory "<<fileName;
 
 	if(!fileName.isEmpty())
 	{
@@ -36,7 +36,7 @@ void FTHandWriter::onHandHistory(const QString &s, PBHandInfo *hi)
 	}
 	fileName.append(QDate::currentDate().toString("yyyyMMdd"));
 	fileName.append("-");
-	QString gtype = hi->gameType();
+	QString gtype = hi->gameFamily();
 	gtype.replace(QRegExp("[\\\\\\/]"),"-");
 	fileName.append(gtype);
 	fileName.append(".txt");

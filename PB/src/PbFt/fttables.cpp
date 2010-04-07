@@ -8,14 +8,30 @@
 #include "pbhandinfo.h"
 #include "ftpanel.h"
 #include "fttables.h"
+#include "fttourneys.h"
 
 FTTables::FTTables(QWidget *w, QObject *parent) :FTWidgetHook(w, parent)
 {
 	connect(FTHandHistory::instance(), SIGNAL(handHistoryEvent(const QString &,PBHandInfo*)),
 		this, SLOT(onHandHistory(const QString &,PBHandInfo*)), Qt::DirectConnection);
+	
+	connect(lobby(), SIGNAL(tooManyWindows()), this, SLOT(onTooManyWindows()));
+
+	_windowsLimit = 10000;
+
+	new RMessageAdaptor(this);
 }
 
 
+void FTTables::onTooManyWindows()
+{
+	_windowsLimit = tableCount();
+}
+
+int FTTables::tableCountLimit()
+{
+	return _windowsLimit;
+}
 
 void FTTables::onRowsInserted(QAbstractItemView *view, int start, int end)
 {
@@ -28,11 +44,11 @@ void FTTables::onRowsInserted(QAbstractItemView *view, int start, int end)
 		
 	FTTableId tableId;
 	if(0==parentWTitle)
-		qLog(Debug)<<"no parent with title";
+		qLog(DebugHand)<<"no parent with title";
 	else if(!parseTableId(title, tableId))
 	{
 		if(title!="Last Hand History")
-			qLog(Debug)<<"failed to parse tableId from "<<title;
+			qLog(DebugHand)<<"failed to parse tableId from "<<title;
 	}
 	else {
 		QAbstractItemModel *model = view->model();
@@ -62,14 +78,16 @@ void FTTables::newChatLine(FTTableId tableId, const QString &line)
 		nextHandTable = tableId;
 		
 		if(chatNextHand!=nextHand)
-			qLog(Debug)<<"cachedNextHand=["<<nextHand<<"] isn't equal to chat's nextHand=["<<chatNextHand<<"]";
+			qLog(DebugHand)<<"cachedNextHand=["<<nextHand<<"] isn't equal to chat's nextHand=["<<chatNextHand<<"]";
 
 		assignHandToTable(chatNextHand, tableId);
 	
 		return;
 	}
 	
-	table(tableId)->onNewChatLine(input);
+	FTTable *atable = getTable(tableId);
+	if(atable)
+		atable->onNewChatLine(input);
 }
 
 void FTTables::onStringIndexOf(const QString &s)
@@ -84,17 +102,17 @@ void FTTables::onStringIndexOf(const QString &s)
 	if(nextHandTable.isEmpty())
 		return;
 
-	FTTable *atable = table(nextHandTable);
+	FTTable *atable = getTable(nextHandTable); // AT1
 
 	if(handRe.indexIn(filt)!=-1)
 	{
 		nextHand = handRe.cap(1); // cache nextHand Id
 		nextHandTable="";	// will be filled in Chat.NewLine
-		qLog(Debug)<<"hand "<<nextHand<<" cached";
+		qLog(DebugHand)<<"hand "<<nextHand<<" cached";
 	}else if(atable==0)
 	{
 		if(!nextHand.isEmpty())
-			qLog(Debug)<<"...............--->ignored, table ["<<nextHandTable<<"] not found for nextHand=["<<nextHand<<"]";
+			qLog(DebugHand)<<"...............--->ignored, table ["<<nextHandTable<<"] not found for nextHand=["<<nextHand<<"]";
 	}else if(seatRe.indexIn(filt)!=-1)
 	{
 		// we assume that nextHandTable will be filled upon this time (in OnNewChatLine)
@@ -102,7 +120,7 @@ void FTTables::onStringIndexOf(const QString &s)
 		QString playerStr = seatRe.cap(2);
 		QString stakeStr = seatRe.cap(3);
 
-		qLog(Debug)<<nextHand+": Seat ["<<seatStr<<"] ["<<playerStr<<"] ["<<stakeStr<<"] assigned to table "<<nextHandTable;
+		qLog(DebugHand)<<nextHand+": Seat ["<<seatStr<<"] ["<<playerStr<<"] ["<<stakeStr<<"] assigned to table "<<nextHandTable;
 		bool isSitOut = filt.indexOf("sitting out")>=0;
 		atable->setPlayerAtSeat(seatStr.toInt() - 1, playerStr, stakeStr.toDouble(), isSitOut);
 		
@@ -111,7 +129,7 @@ void FTTables::onStringIndexOf(const QString &s)
 //		 doesn't work since button is determined only after blinds were posted...
 		
 		int butSeat = buRe.cap(1).toInt()-1;
-		qLog(Debug)<<nextHand+": Button at seat #"<<(butSeat+1)<<" at table "<<nextHandTable;
+		qLog(DebugHand)<<nextHand+": Button at seat #"<<(butSeat+1)<<" at table "<<nextHandTable;
 
 		atable->buttonSeat(butSeat);
 		
@@ -121,10 +139,16 @@ void FTTables::onStringIndexOf(const QString &s)
 void FTTables::assignHandToTable(QString chatNextHand, QString tableId)
 {
 	// assign table to hand
-	table(tableId)->setHandId(chatNextHand);
+	FTTable *atable = getTable(tableId);
+	if(!atable)
+	{
+		qLog(Debug)<<"assignHandToTable "<<tableId<<" no table";
+		return;
+	}
+	atable->setHandId(chatNextHand);
 	handsOnTables[chatNextHand] = tableId; // update hand->table mapping
 
-	qLog(Debug) << "hand ["<<chatNextHand<<"] binded to table ["<<tableId<<"]";
+	qLog(DebugHand) << "hand ["<<chatNextHand<<"] binded to table ["<<tableId<<"]";
 }
 
 FTLobby *FTTables::lobby()
@@ -135,13 +159,13 @@ FTLobby *FTTables::lobby()
 void FTTables::onHandHistory(const QString &histStr, PBHandInfo *hi)
 {
 	if(0==hi)
-		qLog(Debug)<<"FTTables::onHandHistory: no handInfo, error!";
+		qLog(DebugHand)<<"FTTables::onHandHistory: no handInfo, error!";
 	else
 	{
 		QString handId = hi->handId();
 		QString tableId = hi->tableId();
 
-		qLog(Debug)<<"onHandHistory(Hand=["<<handId<<"], Table=["<<tableId<<"]";
+		qLog(DebugHand)<<"onHandHistory(Hand=["<<handId<<"], Table=["<<tableId<<"]";
 
 		QHash<QString,QString>::iterator i = handsOnTables.find(handId);
 		if(i!=handsOnTables.end())
@@ -149,7 +173,7 @@ void FTTables::onHandHistory(const QString &histStr, PBHandInfo *hi)
 			QString cachedTableId = i.value();
 			handsOnTables.erase(i);
 
-			qLog(Debug)<<"removed Hand ["<<handId<<"]->"<<cachedTableId<<" from handTableMap";
+			qLog(DebugHand)<<"removed Hand ["<<handId<<"]->"<<cachedTableId<<" from handTableMap";
 
 			FTTable *t = getTable(cachedTableId);
 			if(t==0)
@@ -161,13 +185,17 @@ void FTTables::onHandHistory(const QString &histStr, PBHandInfo *hi)
 				t->onHandEnd(handId);
 			}
 		}else{
-			qLog(Debug)<<"history ignored (dup?) for hand "<<handId<<" table "<<tableId;
+			qLog(DebugHand)<<"history ignored (dup?) for hand "<<handId<<" table "<<tableId;
 		}
 	}
 	// notify all
 	emit handHistoryEvent(histStr);
 }
 
+void FTTables::tourneyIsOver(FTTable *tbl)
+{
+	tbl->immediateClose();
+}
 
 bool FTTables::parseTableId(const QString &windowTitle, QString &tableId)
 {
@@ -274,7 +302,9 @@ FTTable *FTTables::tableFromChild(QWidget *widget)
 				tbl->onWidget(tableWidget);
 				// here caption should be parsed
 				emit tableOpenedEvent(tableId);
-				qLog() << "table ["<<tableId<<"] assigned widget "<<tableWidget;
+				qLog(DebugHand) << "table ["<<tableId<<"] assigned widget "<<tableWidget;
+
+				sendTableInfo(tbl);
 			}
 		}
 	}
@@ -293,6 +323,21 @@ FTTable *FTTables::tourneyTable(QString tourneyId)
 		}
 	}
 	return 0;
+}
+
+QList<FTTable*> FTTables::tourneyTables()
+{
+	QList<FTTable*> result;
+	Q_FOREACH(QObject *obj, children())
+	{
+		FTTable *tbl = qobject_cast<FTTable*>(obj);
+		if(0!=tbl)
+		{
+			if(tbl->isTourney())
+				result.append(tbl);
+		}
+	}
+	return result;
 }
 
 void FTTables::onPaint(QWidget *widget)
@@ -316,4 +361,10 @@ void FTTables::onWidget(QWidget *widget)
 	FTTable *table = tableFromChild(widget);
 	if(0!=table)
 		table->onWidget(widget);
+}
+
+void FTTables::sendTableInfo(FTTable *tbl)
+{
+	if(tbl->isTourney())
+		lobby()->tourneys()->sendTourneyInfo(tbl->tourneyId());
 }

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'ftlobby.h'
 **
-** Created: Sat 13. Mar 18:21:59 2010
+** Created: Mon 29. Mar 21:29:44 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -24,7 +24,7 @@ static const uint qt_meta_data_FTLobby[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   12, // methods
+       4,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,11 +32,19 @@ static const uint qt_meta_data_FTLobby[] = {
  // signals: signature, parameters, type, tag, flags
        9,    8,    8,    8, 0x05,
 
+ // slots: signature, parameters, type, tag, flags
+      30,   26,    8,    8, 0x0a,
+      55,   50,    8,    8, 0x0a,
+      83,   50,    8,    8, 0x0a,
+
        0        // eod
 };
 
 static const char qt_meta_stringdata_FTLobby[] = {
-    "FTLobby\0\0tooManyWindows()\0"
+    "FTLobby\0\0tooManyWindows()\0msg\0"
+    "onConfig(RMessage*)\0list\0"
+    "onListUpdatedEvent(FTList*)\0"
+    "onPaintDoneEvent(FTList*)\0"
 };
 
 const QMetaObject FTLobby::staticMetaObject = {
@@ -65,9 +73,12 @@ int FTLobby::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: tooManyWindows(); break;
+        case 1: onConfig((*reinterpret_cast< RMessage*(*)>(_a[1]))); break;
+        case 2: onListUpdatedEvent((*reinterpret_cast< FTList*(*)>(_a[1]))); break;
+        case 3: onPaintDoneEvent((*reinterpret_cast< FTList*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 1;
+        _id -= 4;
     }
     return _id;
 }

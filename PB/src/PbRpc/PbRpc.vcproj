@@ -363,6 +363,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\rpcurl.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -537,6 +541,10 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\ClassDiagram1.cd"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global

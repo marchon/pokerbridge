@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'pbhandinfo.h'
 **
-** Created: Sun 14. Mar 04:04:21 2010
+** Created: Fri 2. Apr 21:30:27 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -18,83 +18,6 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_PBGameInfo[] = {
-
- // content:
-       2,       // revision
-       0,       // classname
-       0,    0, // classinfo
-       0,    0, // methods
-       2,   12, // properties
-       0,    0, // enums/sets
-       0,    0, // constructors
-
- // properties: name, type, flags
-      18,   11, 0x06095103,
-      29,   11, 0x06095103,
-
-       0        // eod
-};
-
-static const char qt_meta_stringdata_PBGameInfo[] = {
-    "PBGameInfo\0double\0smallBlind\0bigBlind\0"
-};
-
-const QMetaObject PBGameInfo::staticMetaObject = {
-    { &QObject::staticMetaObject, qt_meta_stringdata_PBGameInfo,
-      qt_meta_data_PBGameInfo, 0 }
-};
-
-const QMetaObject *PBGameInfo::metaObject() const
-{
-    return &staticMetaObject;
-}
-
-void *PBGameInfo::qt_metacast(const char *_clname)
-{
-    if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_PBGameInfo))
-        return static_cast<void*>(const_cast< PBGameInfo*>(this));
-    return QObject::qt_metacast(_clname);
-}
-
-int PBGameInfo::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
-{
-    _id = QObject::qt_metacall(_c, _id, _a);
-    if (_id < 0)
-        return _id;
-    
-#ifndef QT_NO_PROPERTIES
-     if (_c == QMetaObject::ReadProperty) {
-        void *_v = _a[0];
-        switch (_id) {
-        case 0: *reinterpret_cast< double*>(_v) = smallBlind(); break;
-        case 1: *reinterpret_cast< double*>(_v) = bigBlind(); break;
-        }
-        _id -= 2;
-    } else if (_c == QMetaObject::WriteProperty) {
-        void *_v = _a[0];
-        switch (_id) {
-        case 0: setSmallBlind(*reinterpret_cast< double*>(_v)); break;
-        case 1: setBigBlind(*reinterpret_cast< double*>(_v)); break;
-        }
-        _id -= 2;
-    } else if (_c == QMetaObject::ResetProperty) {
-        _id -= 2;
-    } else if (_c == QMetaObject::QueryPropertyDesignable) {
-        _id -= 2;
-    } else if (_c == QMetaObject::QueryPropertyScriptable) {
-        _id -= 2;
-    } else if (_c == QMetaObject::QueryPropertyStored) {
-        _id -= 2;
-    } else if (_c == QMetaObject::QueryPropertyEditable) {
-        _id -= 2;
-    } else if (_c == QMetaObject::QueryPropertyUser) {
-        _id -= 2;
-    }
-#endif // QT_NO_PROPERTIES
-    return _id;
-}
 static const uint qt_meta_data_PBHandInfo[] = {
 
  // content:

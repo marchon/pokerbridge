@@ -16,6 +16,11 @@ public:
 	int tableCount();
 	QList<FTTable*> tables();
 	FTTable *tourneyTable(QString tourneyId);
+	QList<FTTable*> tourneyTables();
+	int tableCountLimit();
+	void tourneyIsOver(FTTable *tbl);
+
+	void sendTableInfo(FTTable *tbl);
 public slots:
 	void onRowsInserted(QAbstractItemView *view, int start, int end);
 	//void onWidgetSetVisible(QWidget *widget, bool isVisible);
@@ -24,6 +29,10 @@ public slots:
 	void onHandHistory(const QString &histStr, PBHandInfo *hi);
 	void onPaint(QWidget *widget);
 	void onWidget(QWidget *widget);
+
+	void onTooManyWindows();
+
+	void emitTableOpened(QString tableId){ emit tableOpenedEvent(tableId); }
 signals:
 	void handHistoryEvent(const QString &history);
 	void tableOpenedEvent(QString tableId);
@@ -40,7 +49,7 @@ protected:
 protected:
 	QString nextHand;
 	QString nextHandTable;
-
+	int _windowsLimit;
 	QHash<QString, QString> handsOnTables;
 
 	// tableId(string) -> table

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'fttables.h'
 **
-** Created: Sun 14. Mar 04:04:27 2010
+** Created: Fri 2. Apr 21:30:32 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -24,7 +24,7 @@ static const uint qt_meta_data_FTTables[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   12, // methods
+       9,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,6 +39,8 @@ static const uint qt_meta_data_FTTables[] = {
      174,  163,    9,    9, 0x0a,
      216,  209,    9,    9, 0x0a,
      234,  209,    9,    9, 0x0a,
+     253,    9,    9,    9, 0x0a,
+     272,   44,    9,    9, 0x0a,
 
        0        // eod
 };
@@ -51,6 +53,7 @@ static const char qt_meta_stringdata_FTTables[] = {
     "s\0onStringIndexOf(QString)\0histStr,hi\0"
     "onHandHistory(QString,PBHandInfo*)\0"
     "widget\0onPaint(QWidget*)\0onWidget(QWidget*)\0"
+    "onTooManyWindows()\0emitTableOpened(QString)\0"
 };
 
 const QMetaObject FTTables::staticMetaObject = {
@@ -85,9 +88,11 @@ int FTTables::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 4: onHandHistory((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< PBHandInfo*(*)>(_a[2]))); break;
         case 5: onPaint((*reinterpret_cast< QWidget*(*)>(_a[1]))); break;
         case 6: onWidget((*reinterpret_cast< QWidget*(*)>(_a[1]))); break;
+        case 7: onTooManyWindows(); break;
+        case 8: emitTableOpened((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }

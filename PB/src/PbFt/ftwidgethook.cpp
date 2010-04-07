@@ -95,9 +95,14 @@ void FTWidgetHook::onWidgetChilds(QWidget *w, bool recurse)
 
 void FTWidgetHook::immediateClose()
 {
-	Q_ASSERT(widget());
-	//QTimer::singleShot(1000, widget(), SLOT(close()));
-	widget()->close();
+	qLog(Debug)<<"immClose "<<this;
+	if(widget()){
+		Q_ASSERT(widget());
+		//QTimer::singleShot(1000, widget(), SLOT(close()));
+		widget()->close();
+	}else{
+		qLog(Debug)<<"immClose called for widget=0 "<<objectName();
+	}
 }
 
 void FTWidgetHook::close()
@@ -132,10 +137,8 @@ void FTWidgetHook::onClose(QWidget *w, QEvent *e)
 	WIDGET_FORWARD(onClose(w,e));
 	if(w==widget())
 	{
-		_closing = true;
 		qLog(Info)<<"WidgetClose "<<metaObject()->className()<<"["<<objectName()<<"], widget="<<w;
-		emit widgetClosing(this);
-		deleteLater();
+		_widgetClosing();
 	}
 }
 void FTWidgetHook::onDestroy(QWidget *w, QEvent *e)
@@ -143,11 +146,18 @@ void FTWidgetHook::onDestroy(QWidget *w, QEvent *e)
 	WIDGET_FORWARD(onDestroy(w,e));
 	if(w==widget())
 	{
-		_closing = true;
-		qLog(Info)<<"WidgetDestroy "<<metaObject()->className()<<"["<<objectName()<<"], widget="<<w;
-		emit widgetDestroying(this);
-		deleteLater();
+		qLog(Info)<<"WidgetDestroy "<<w;
+		_widgetClosing();
 	}
+}
+
+void FTWidgetHook::_widgetClosing()
+{
+	bool closing = _closing;
+	_closing = true;
+	if(!closing)
+		emit widgetClosing(this);
+	deleteLater();
 }
 
 void FTWidgetHook::onDrawTextItem(QWidget *w, const QPointF &p, const QTextItem &ti)
@@ -191,7 +201,7 @@ void FTWidgetHook::click(QPoint pt)
 			pt,widget()->mapToGlobal(pt), Qt::LeftButton,Qt::LeftButton,0);
 	QCoreApplication::postEvent(widget(), e);
 
-	qLog(Debug)<<" posted click to "<<QTUtil::widgetInfo(widget())<<" at "<<pt;
+	//qLog(DebugHand)<<" posted click to "<<QTUtil::widgetInfo(widget())<<" at "<<pt;
 
 }
 /*

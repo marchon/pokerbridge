@@ -13,12 +13,15 @@ QAbstractButton *FTButton::button()
 
 void FTButton::press()
 {
+	Q_ASSERT(widget());
+	Q_ASSERT(button());
 	button()->click();
-	int w = widget()->width();
+/*	int w = widget()->width();
 	int h = widget()->height();
 	int x = qrand()%(w*2/3)+ w/6;
 	int y = qrand()%(h*2/3)+ h/6;
 	//click(QPoint(x,y));
+*/
 }
 
 QString FTButton::text()

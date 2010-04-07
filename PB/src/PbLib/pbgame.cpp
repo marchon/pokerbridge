@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "pbgameinfo.h"
-
+//#include "pbgameinfo.h"
+#include "pbgame.h"
 void PBGame::winMainPot(PBSeatedPlayer *p, double amount)
 {
 //	qLog(Info)<<handId()+": "+player+" wins main pot "+QString().sprintf("%f",amount);

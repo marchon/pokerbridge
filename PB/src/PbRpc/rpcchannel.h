@@ -4,7 +4,8 @@
 class JsonReader;
 class QTcpSocket;
 class RpcConnection;
-
+class RpcMap;
+class RpcUrl;
 class PB_EXPORT RpcChannel : public QObject
 {
 	Q_OBJECT
@@ -15,13 +16,15 @@ public:
 	~RpcChannel();
 public:
 	RpcConnection *connection();
-	// connects obj signals and slots to this channel
-	void registerObject( QObject *obj);
-
 public:
 	// connects to tcp RPC server
 	bool connectToServer(QString url, uint port);
-	QString remoteUrl();
+	QString remoteHost();
+	QString localHost();
+
+	bool remoteCall(const RpcUrl &path, const QByteArray &method, const QList<QVariant> &args, const RpcUrl &senderUrl);
+	bool remoteSignal(const QByteArray &signal, const QList<QVariant> &args, const RpcUrl &senderUrl);
+
 protected:
 	void init();
 
@@ -40,6 +43,9 @@ protected:
 	RpcConnection *_conn;
 	QString _remoteHost;
 	int _remotePort;
+	QString _localHost;
+	int _localPort;
+	RpcMap* _map;
 };
 
 #endif // RpcChannel_H

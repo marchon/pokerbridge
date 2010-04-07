@@ -3,7 +3,7 @@
 #include "json.h"
 #include "rpcadaptor.h"
 #include "rpclistener.h"
-#include "RpcChannel.h"
+#include "rpcchannel.h"
 
 RpcChannel::RpcChannel(QTcpSocket *socket, RpcConnection *conn)
 	: QObject(conn)
@@ -11,6 +11,8 @@ RpcChannel::RpcChannel(QTcpSocket *socket, RpcConnection *conn)
 	_socket = socket;
 	_remoteHost =  _socket->peerAddress().toString();
 	_remotePort = _socket->peerPort();
+	_localHost = _socket->localAddress().toString();
+	_localPort = _socket->localPort();
 	init();
 }
 
@@ -26,24 +28,19 @@ RpcChannel::~RpcChannel()
 
 }
 
-QString RpcChannel::remoteUrl()
+QString RpcChannel::remoteHost()
 {
 	return QString().append(_remoteHost).append(":%1").arg(_remotePort);
+}
+
+QString RpcChannel::localHost()
+{
+	return QString().append(_localHost).append(":%1").arg(_localPort);
 }
 
 RpcConnection *RpcChannel::connection()
 {
 	return static_cast<RpcConnection*>(parent());
-	/*if(0==_conn)
-	{
-		RpcServer *serv = qobject_cast<RpcServer*>(parent());
-		if(0!=serv && 0!=serv->registry())
-			_reg = serv->registry();
-		if(0==_reg)
-			_reg = new RpcRegistry(this);
-	}
-	return _reg;
-	*/
 }
 
 
@@ -62,31 +59,38 @@ void RpcChannel::init()
 
 }
 
+
 void RpcChannel::socketDisconnected()
 {
-	connection()->channelDisconnected(this);
+	connection()->chanelDisconnected(this);
 }
 
 
 bool RpcChannel::connectToServer(QString url, uint port)
 {
+	qLog(Debug)<<"connect rpc to "<<url<<":"<<port;
 	Q_ASSERT(_socket==0);
 	_socket = new QTcpSocket(this);
 	_socket->connectToHost(url, port);
 	init();
+
 	if(!_socket->waitForConnected())
 	{
 		qLog(Debug)<<"timeout while connecting to server "<<url<<":"<<port;
 		return false;
 	}
-	_remoteHost = url;
-	_remotePort = port;
 	return true;
 }
 
 void RpcChannel::connected()
 {
-	qLog(Debug) << "socket connected";
+	_localHost = _socket->localAddress().toString();
+	_localPort = _socket->localPort();
+	_remoteHost = _socket->peerAddress().toString();
+	_remotePort = _socket->peerPort();
+	qLog(Debug) << "socket connected ("<<_localHost<<"("<<_localPort<<")->"<<_remoteHost<<"("<<_remotePort<<")";
+
+	connection()->channelConnected(this);
 }
 
 void RpcChannel::readyRead()
@@ -95,52 +99,73 @@ void RpcChannel::readyRead()
 		_reader->parse();
 }
 
+bool getMethod(const QVariantMap &msg, RpcUrl &target, QString &method, RpcUrl &sender)
+{
+	method = msg.value("method").toString();
+	target.parse(msg.value("target").toString());
+	sender.parse(msg.value("sender").toString());
+	return true;
+}
+
 void RpcChannel::newMessage(QVariantMap msg)
 {
-	QString targetPath = msg.value("target").toString();
-	if(!targetPath.isEmpty())
+	RpcUrl target;
+	RpcUrl sender;
+	QString method;
+	QVariantList args;
+
+	getMethod(msg, target, method, sender );
+	args = msg.value("params").toList();
+
+	bool isCall = !target.isEmpty();
+	if(isCall)
 	{
-		QObject *target = connection()->target(targetPath);
-		if(0!=target)
-		{
-			RpcAdaptor *ra = RpcAdaptor::get(target);
-			if(0!=ra)
-			{
-				ra->invokeMessage(msg, this);
-			}
-		}else{
-			qWarning()<<"target "<<targetPath<<" not found, message="<<msg;
-		}
-	}else{
-		bool dispatched = false;
-		Q_FOREACH(QObject*obj, connection()->published().values())
-		{
-			RpcAdaptor *ra = RpcAdaptor::get(obj);
-			if(0!=ra)
-			{
-				if(ra->signalMessage(msg, this))
-					dispatched=true;
-			}
-		}
-		if(!dispatched)
-		{
-			qLog(Debug)<<"message "<<msg<<" had no listeners";
-		}
+		if(target.host==localHost())
+			connection()->channelCall(target, method.toLatin1(), args, sender);
+		else
+			qLog(Debug)<<"call to host "<<target.host<<"!=localhost="<<localHost();
 	}
-	//emit incomingMessage(msg);
+	else
+		connection()->channelSignal(method.toLatin1(), args, sender);
+}
+
+void putMethod(QVariantMap &msg, const RpcUrl &target, const QString &method, const RpcUrl &senderUrl)
+{
+	msg["sender"]=senderUrl.toString();
+	msg["target"]=target.toString();
+	msg["method"]=method;
+}
+
+bool RpcChannel::remoteCall(const RpcUrl &path, const QByteArray &method, const QList<QVariant> &args, const RpcUrl &senderUrl)
+{
+	QVariantMap msg;
+	msg["params"]=args;
+	putMethod(msg,path,method,senderUrl);
+	sendMessage(msg);
+
+	qLog(Debug)<<"SendCall: "<<method<<" to "<<path.toString()<<" from "<<senderUrl.toString();
+
+	return true;
+}
+
+bool RpcChannel::remoteSignal(const QByteArray &signal, const QList<QVariant> &args, const RpcUrl &senderUrl)
+{
+	QVariantMap msg;
+	msg["params"]=args;
+	RpcUrl target;
+	putMethod(msg,target,signal,senderUrl);
+	sendMessage(msg);
+	
+	qLog(Debug)<<"SendSignal: "<<signal<<" from "<<senderUrl.toString();
+
+	return true;
 }
 
 void RpcChannel::sendMessage(QVariantMap msg)
 {
 	QString data = VariantToJson::toJson(msg);
+	qLog(Debug)<<"write: "<<data;
 	_socket->write(data.toAscii());
 	//qLog(Debug)<<"RpcChannel::sendMessage "<<msg<<endl<<"data:"<<data;
 }
 
-void RpcChannel::registerObject(QObject *obj)
-{
-	RpcAdaptor *adaptor = RpcAdaptor::get(obj);
-	Q_ASSERT(adaptor);
-
-	connect(adaptor, SIGNAL(sendMessage(QVariantMap)), this, SLOT(sendMessage(QVariantMap)));
-}

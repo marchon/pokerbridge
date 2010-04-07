@@ -23,3 +23,4 @@
 #include "pbdefs.h"
 
 #include "qpblog.h"
+#include "rmsg.h"

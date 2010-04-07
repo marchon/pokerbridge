@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'rpclistener.h'
 **
-** Created: Sat 13. Mar 18:21:51 2010
+** Created: Thu 25. Mar 16:20:20 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -24,7 +24,7 @@ static const uint qt_meta_data_RpcListener[] = {
        2,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   12, // methods
+       2,   12, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -34,7 +34,6 @@ static const uint qt_meta_data_RpcListener[] = {
 
  // slots: signature, parameters, type, tag, flags
       61,   12,   12,   12, 0x08,
-      81,   77,   12,   12, 0x08,
 
        0        // eod
 };
@@ -42,7 +41,7 @@ static const uint qt_meta_data_RpcListener[] = {
 static const char qt_meta_stringdata_RpcListener[] = {
     "RpcListener\0\0msg,ch\0"
     "incomingMessage(QVariantMap,RpcChannel*)\0"
-    "newConnection()\0msg\0connNewMessage(QVariantMap)\0"
+    "newConnection()\0"
 };
 
 const QMetaObject RpcListener::staticMetaObject = {
@@ -72,10 +71,9 @@ int RpcListener::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: incomingMessage((*reinterpret_cast< QVariantMap(*)>(_a[1])),(*reinterpret_cast< RpcChannel*(*)>(_a[2]))); break;
         case 1: newConnection(); break;
-        case 2: connNewMessage((*reinterpret_cast< QVariantMap(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 3;
+        _id -= 2;
     }
     return _id;
 }

@@ -23,3 +23,6 @@ class PBSeatedPlayer;
 class PBGame;
 class PBTable;
 class PBSeats;
+
+
+void PBLib_init();

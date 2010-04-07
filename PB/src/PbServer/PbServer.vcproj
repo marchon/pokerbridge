@@ -39,8 +39,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.;.\..\..\include;.\..\PbLib;$(QTDIR)\src\corelib\thread;..\PbRpc"
-				PreprocessorDefinitions="_WINDOWS,_DLL,NDEBUG,_CONSOLE"
+				AdditionalIncludeDirectories=".\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.;.\..\..\include;.\..\PbLib;$(QTDIR)\src\corelib\thread;.\..\RMsg"
+				PreprocessorDefinitions="_WINDOWS,_DLL,NDEBUG,_CONSOLE;QT_CORELIB"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="2"
@@ -59,7 +59,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="QtCore4.lib QtGui4.lib QtNetwork4.lib psapi.lib easyhook32.lib"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;../../lib/FT_QT4"
+				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;$(QTDIR)/lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -87,7 +87,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)/../bin/$(ConfigurationName)"
 			IntermediateDirectory="../tmp/$(ProjectName)/$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -108,7 +108,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.;.\..\..\include;.\..\PbLib;$(QTDIR)\src\corelib\thread;..\PbRpc"
+				AdditionalIncludeDirectories=".\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.;.\..\..\include;.\..\PbLib;$(QTDIR)\src\corelib\thread;.\..\RMsg"
 				PreprocessorDefinitions="WIN32;_CONSOLE;_DEBUG;QT_CORELIB"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="false"
@@ -127,8 +127,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="QtCore4.lib QtGui4.lib QtNetwork4.lib psapi.lib easyhook32.lib"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;../../lib/FT_QT4"
+				AdditionalDependencies="QtCored4.lib QtGuid4.lib QtNetworkd4.lib psapi.lib easyhook32.lib"
+				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;;$(QTDIR)\lib"
 				GenerateDebugInformation="true"
 			/>
 			<Tool
@@ -163,11 +163,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\pbremotetable.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\pbserver.cpp"
+				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
@@ -197,58 +193,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\pbremotetable.h"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_CONSOLE -D_DLL -D_WINDOWS -DNDEBUG -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\PbRpc\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\pbremotetable.h&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_CONSOLE -D_DEBUG -D_WINDLL -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\PbRpc\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\pbremotetable.h&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\pbserver.h"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_CONSOLE -D_DLL -D_WINDOWS -DNDEBUG -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\PbRpc\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\pbserver.h&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing $(InputFileName)..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot; -D_CONSOLE -D_DEBUG -D_WINDLL -DQT_CORELIB -DWIN32 -I&quot;$(QTDIR)\include\.&quot; -I&quot;$(QTDIR)\src\corelib\thread\.&quot; -I&quot;.\.&quot; -I&quot;.\..\..\include\.&quot; -I&quot;.\..\PbLib\.&quot; -I&quot;.\..\PbRpc\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\GeneratedFiles\.&quot; &quot;-fstdafx.h&quot; &quot;-f..\..\pbserver.h&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -271,62 +215,22 @@
 				Filter="cpp;moc"
 				SourceControlFiles="false"
 				>
-				<File
-					RelativePath=".\GeneratedFiles\Release\moc_pbremotetable.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GeneratedFiles\Release\moc_pbserver.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
 			</Filter>
 			<Filter
 				Name="Debug"
 				Filter="cpp;moc"
 				SourceControlFiles="false"
 				>
-				<File
-					RelativePath=".\GeneratedFiles\Debug\moc_pbremotetable.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\GeneratedFiles\Debug\moc_pbserver.cpp"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\ClassDiagram1.cd"
+			>
+		</File>
+		<File
+			RelativePath=".\ClassDiagram2.cd"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global
