@@ -44,7 +44,7 @@ void PBGameInfos::dump()
 	QList<PBSiteGameInfo*> all = qFindChildren<PBSiteGameInfo*>(this);
 	Q_FOREACH(PBSiteGameInfo *gi, all)
 	{
-		df<<gi->gameId()<<"\t\t"<<gi->ownerId()<<"\t\t"<<gi->tableOpened()<<"\t\t"<<gi->tourneyOpened()<<"\n";
+		df<<gi->gameId()<<"\t\t"<<gi->ownerId()<<"\t\t"<<gi->tableOpened()<<"\t\t"<<gi->tourneyOpened()<<"\t\t"<<gi->gameComplete()<<"\n";
 	}
 }
 

@@ -14,7 +14,19 @@ FTHandHistory::FTHandHistory(QObject *parent) : QObject(parent)
 
 void FTHandHistory::onStringAppend(const QString &self, const QString &s)
 {
-	//qLog(Debug)<<"FTHandHistory::onStringAppend";
+	const char* words[]={"SUMMARY", "HOLE", "Full Tilt Poker Game", "folds"};
+
+	bool isHistory = false;
+	for(int i=0;i<sizeof(words)/sizeof(char*);i++)
+	{
+		if(self.indexOf(QString::fromAscii(words[i]))!=-1)
+		{
+			qLog(Debug)<<"FTHIST["<<self<<"|||"<<s<<"]";
+			break;
+		}
+	}
+
+	//qLog(Debug)<<"FTHandHistory::onStringAppend<<<"<<self<<"<<<"<<s<<">>>";
 	if(self.indexOf(QString::fromAscii("SUMMARY"))!=-1)
 	{
 		QString filtered = self;

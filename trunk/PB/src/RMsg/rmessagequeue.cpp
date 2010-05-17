@@ -47,6 +47,7 @@ void RMessageQueue::onNewRMsg(RMessage *msg)
 	}else
 	{
 		msg->setQueue(this);
+		RMessageAdaptor::handleRMsg(msg);	// if have handlers, this will launch
 		msg->setVisited(this);	// this will prevent the message from being dispatched again into the queue
 		msg->put("r-queue-id", objectName());
 		dispatchRMsg(msg);

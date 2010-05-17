@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'fttourneys.h'
 **
-** Created: Fri 2. Apr 21:30:32 2010
+** Created: Wed 7. Apr 21:07:59 2010
 **      by: The Qt Meta Object Compiler version 61 (Qt 4.5.2)
 **
 ** WARNING! All changes made in this file will be lost!
