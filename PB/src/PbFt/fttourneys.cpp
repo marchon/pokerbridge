@@ -11,7 +11,7 @@
 FTTourneys::FTTourneys(QWidget *w, QObject *parent) : FTWidgetHook(w, parent)
 {
 	new  RMessageAdaptor(this);
-	startTimer(10000);
+	startTimer(60000);
 }
 
 void FTTourneys::setTables(FTTables *tables)
@@ -206,6 +206,17 @@ int FTTourneys::tourneyLobbyCount()
 	QList<FTTourneyLobby*> lobbies = qFindChildren<FTTourneyLobby*>(this, QRegExp(".*"));
 	return lobbies.size();
 
+}
+
+bool FTTourneys::hasUnknownStateLobbies()
+{
+	QList<FTTourneyLobby*> lobbies = qFindChildren<FTTourneyLobby*>(this, QRegExp(".*"));
+	Q_FOREACH(FTTourneyLobby *tl, lobbies)
+	{
+		if(!tl->ready())
+			return true;
+	}
+	return false;
 }
 
 void FTTourneys::timerEvent(QTimerEvent *e)

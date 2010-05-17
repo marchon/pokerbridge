@@ -29,7 +29,7 @@ public:
 	void start();
 	void stop();
 	bool isRunning();
-	bool isPaused();
+	virtual bool isPaused();
 	virtual void timerEvent(QTimerEvent *e);
 	
 	FTLobby *lobby();

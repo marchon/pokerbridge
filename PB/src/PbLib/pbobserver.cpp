@@ -50,13 +50,19 @@ void PBObserver::onGameInfo(RMessage *msg)
 	if(!gi->owner())	// if not observed by anyone
 	{
 		if(gi->canOpen())
-			if(drv->canHandleMoreTables())
+		{	if(drv->canHandleMoreTables())
 			{
 				gi->setOwner(drv);	// locks the game
 				gi->setLastUpdateTime(QTime::currentTime());
 				gi->updateState(&temp);
+				qLog(Debug)<<"LOCKED "<<gi->gameId()<<" by "<<gi->ownerId();
 				openTable(msg, gi);
 			}
+		}else
+		{
+			qLog(Debug)<<"CLOSETOURNEY_NOT_OWNER_CANT_OPEN "<<gi->gameId();
+			closeTourney(msg, gi);
+		}
 		
 	}else
 	{
@@ -66,28 +72,34 @@ void PBObserver::onGameInfo(RMessage *msg)
 		{
 			gi->updateState(&temp);
 			if(gi->tableOpened())
+			{
 				gi->setNeedTableOpened(-1); // opened ok
+				if(gi->tourneyOpened())
+				{
+					qLog(Debug)<<"CLOSETOURNEY_TOPEN "<<gi->gameId()<<" OWN="<<gi->ownerId();
+					closeTourney(msg,gi);
+				}
+			}
 			else if(gi->canOpen())
 			{
+				qLog(Debug)<<"REOBSERVE "<<gi->gameId()<<" by "<<gi->ownerId();
 				// was closde by someone manualy
 				openTable(msg, gi);
+			}else{
+				// not opend, cannot open - unlock
+				qLog(Debug)<<"CLOSETOURNEY_CANTOPEN, UNLOCK "<<gi->gameId()<<" "<<gi->ownerId();
+				gi->setOwner(0); // unlock
+				gi->setTableOpened(0);
+				gi->setTourneyOpened(0);
 			}
 			gi->setLastUpdateTime(QTime::currentTime());
 		}else   // locked by	 other driver
 		{
+			qLog(Debug)<<"CLOSE "<<gi->gameId()<<" locked by "<<gi->ownerId()<<" upd from "<<gi->driver();
 			closeTourney(msg, gi);
 		}
 	}
 	
-	//// CLEANUP. will change if JOINs
-	if(gi->tourneyOpened())
-	{
-		if(gi->tableOpened())
-			closeTourney(msg, gi);	// dont keep any TL with opened tables
-
-		if(!gi->canOpen()) // is "completed"
-			closeTourney(msg, gi);
-	}
 	_games->dump();
 }
 
@@ -99,13 +111,15 @@ void PBObserver::timerEvent(QTimerEvent *e)
 		if(gi->owner())
 		{
 			int elaps = gi->lastUpdateTime().elapsed();
-			if(elaps>3000)
+			if(elaps>120000)
 			{
 				// we eve wanted to open table but it wasnt
-				if(gi->needTableOpened()!=-1 && gi->tableOpened()!=gi->needTableOpened())
+				//if(gi->needTableOpened()!=-1 && gi->tableOpened()!=gi->needTableOpened())
 				{
-					qLog(Debug)<<"No updates of locked game ("<<elaps<<","<<gi->owner()->isTimedOut()<<" from "<<gi->ownerId()<<" for 10s "<<gi->gameId();
+					qLog(Debug)<<"UNLOCK after "<<elaps<<" OWNER WAS ="<<gi->ownerId()<<" ID="<<gi->gameId();
 					gi->setOwner(0); // unlock
+					gi->setTableOpened(0);
+					gi->setTourneyOpened(0);
 				}
 			}
 		}

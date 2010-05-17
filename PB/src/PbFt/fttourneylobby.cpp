@@ -17,6 +17,7 @@ FTTourneyLobby::FTTourneyLobby(QWidget *widget, QObject *parent) : FTWidgetHook(
 	_timeAlive=0;
 	_observeBtn = 0;
 	_observeAsked = false;
+	_openedTime = QTime::currentTime();
 
 	_status = "Unknown";
 	hasPainted = false;
@@ -141,8 +142,8 @@ void FTTourneyLobby::emitWidgetFound()
 		return;
 	}
 	_ready = true;
+	qLog(Info)<<"Tourney Lobby created ["+tourneyId()+"] "<<_openedTime.elapsed();
 	_openedTime = QTime::currentTime();
-	qLog(Info)<<"Tourney Lobby created ["+tourneyId()+"]";
 	tourneys()->tourneyLobbyOpened(this);
 	if(_status!="Unknown")
 		tourneys()->sendTourneyInfo(tourneyId());

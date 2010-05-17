@@ -26,15 +26,19 @@ bool FTListFilter::filter(FTList *list, int row)
 		int col = list->indexOfColumn(scol);
 		if(col>=0)
 		{
-			if(filts.indexOf(list->value(row, col))>=0)
+			QString value = list->value(row,col);
+			if(filts.indexOf(value)>=0)
+			{
+				qLog(Debug)<<"INCL: "<<value;
 				include=true;
-			else 
+			}else 
+			{
+				qLog(Debug)<<"EXCL: "<<value;
 				exclude=true;
+			}
 		}
 	}
-	if(!(include && !exclude))
-		return false;
-	return true;
+	return include && !exclude;
 }
 
 /////////
@@ -83,6 +87,7 @@ void FTListClicker::start()
 	}
 	_timer = startTimer(_speed);
 	_state = WaitListUpdate;
+	srand(QTime::currentTime().msec());
 	//qLog(Info)<<"FTListClicker started";
 }
 
@@ -128,10 +133,11 @@ void FTListClicker::timerEvent(QTimerEvent *e)
 				_list->dblClick(_currentRow, _currentColumn);
 			}
 			int group = _currentRow/_deltaRow;
-			int totgroups = _list->rowCount()/_deltaRow;
+			int totgroups = _list->rowCount()/_deltaRow+1;
 			group = rand()%totgroups;
 			group--;
-			_currentRow=(group+1)+_firstRow;
+			_currentRow=(group+1)*_deltaRow+_firstRow;
+			qLog(Debug)<<"next row=("<<group+1<<")*"<<_deltaRow<<"+"<<_firstRow<<"="<<_currentRow;
 			if(_currentRow>=_list->rowCount())
 			{
 				_currentRow = _firstRow;
@@ -150,18 +156,7 @@ void FTListClicker::checkState()
 
 bool FTListClicker::isPaused()
 {
-	int maxTablesToStop = PB_OPTION_INT("Grabber/StopTablesCount",1000);
-	if(lobby()->tables()->tableCount()>=maxTablesToStop)
-		return true;
-	
-	/// TODO if(EXPLORE_TURNEYS)
-
-	if(lobby()->tables()->tableCount()+lobby()->tourneys()->tourneyLobbyCount()>=lobby()->tables()->tableCountLimit())
-	{
-		return true;
-	}
 	return false;
-
 }
 void FTListClicker::onListUpdated(FTList *list)
 {

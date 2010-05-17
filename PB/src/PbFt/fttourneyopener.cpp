@@ -10,7 +10,7 @@ FTTourneyOpener::FTTourneyOpener(QObject *parent) : FTListClicker(parent)
 {
 	_filter.add("Status", "Running");
 	_filter.add("Status", "Seating");
-	_filter.add("Status", "Registering");
+//	_filter.add("Status", "Registering"); maybe Reg with players=8+/9...
 
 
 	connect(lobby()->tourneys(), SIGNAL(tourneyLobbyOpenedEvent(FTTourneyLobby*)),
@@ -18,16 +18,14 @@ FTTourneyOpener::FTTourneyOpener(QObject *parent) : FTListClicker(parent)
 	//connect(lobby()->tourneys(), SIGNAL(tourneyLobbyObserveClickedEvent(FTTourneyLobby*)),
 	//	this, SLOT(onTourneyLobbyObserveClicked(FTTourneyLobby*)));
 	
-	_timer = -1;
+	_timer = -1; 
 
 	_currentRow = _firstRow =  0;//PB_OPTION_INT("TableOpener/SplitIndex",0);
 	_deltaRow = 1; //PB_OPTION_INT("TableOpener/SplitFactor",1);
 	_speed = PB_OPTION_INT("Grabber/Periodicity",2000);
-	_splitIndex = PB_OPTION_INT("Grabber/SplitIndex",0);
-	_splitFactor = PB_OPTION_INT("Grabber/SplitFactor",1);
 
 	new RMessageAdaptor(this);
-}
+} 
 
 FTTourneyOpener::~FTTourneyOpener()
 {
@@ -42,8 +40,8 @@ FTLobby *FTTourneyOpener::lobby()
 
 void FTTourneyOpener::timerEvent(QTimerEvent *e)
 {
-	//_firstRow =  PB_OPTION_INT("TableOpener/SplitIndex",0);
-	//_deltaRow = PB_OPTION_INT("TableOpener/SplitFactor",1);
+	_firstRow=PB_OPTION_INT("Grabber/SplitIndex",0);
+	_deltaRow = PB_OPTION_INT("Grabber/SplitFactor",1);
 
 	if(_list)
 	{
@@ -182,3 +180,23 @@ void FTTourneyOpener::onTourneyLobbyClosed(QString tourneyId)
 	_registerList.remove(tourneyId);
 }
 
+
+bool FTTourneyOpener::isPaused()
+{
+	int maxTablesToStop = PB_OPTION_INT("Grabber/StopTablesCount",1000);
+	if(lobby()->tables()->tableCount()>=maxTablesToStop)
+		return true;
+	
+	/// TODO if(EXPLORE_TURNEYS)
+
+	if(lobby()->tables()->tableCount()+lobby()->tourneys()->tourneyLobbyCount()>=lobby()->tables()->tableCountLimit())
+	{
+		return true;
+	}
+
+	if(lobby()->tourneys()->hasUnknownStateLobbies())
+		return true;
+
+	return false;
+
+}

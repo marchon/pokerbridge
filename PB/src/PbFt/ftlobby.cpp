@@ -390,6 +390,8 @@ void FTLobby::onConfig(RMessage *msg)
 			qLog(Debug)<<"onConfig: "<<key<<msg->args()[key];
 		}
 	}
+
+	qLog(Debug)<<"SI="<<PB_OPTION_INT("Grabber/SplitIndex",0)<<" SF="<<PB_OPTION_INT("Grabber/SplitFactor",1);
 }
 
 

@@ -179,6 +179,8 @@ bool FTWidgetHook::visible()
 
 bool FTWidgetHook::visibleTo(FTWidgetHook *wh)
 {
+	if(!widget())
+		return false;
 	return widget()->isVisibleTo(wh->widget());
 }
 

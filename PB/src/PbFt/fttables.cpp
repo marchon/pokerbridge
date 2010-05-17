@@ -96,6 +96,11 @@ void FTTables::onStringIndexOf(const QString &s)
 	QRegExp seatRe("Dealer: Seat (\\d+): (.+) \\(([\\d\\.]+)\\)"); // Dealer: Seat 1: kenmacg (947)
 	QRegExp buRe("Dealer: The button is in seat #(\\d+)");
 
+	if(s.indexOf(QString::fromAscii("folds"))>-1)
+	{
+		qLog(Debug)<<"INDEXOF "<<s;
+	}
+
 	QString filt = s;
 	filt.remove(QRegExp("[$,]"));
 

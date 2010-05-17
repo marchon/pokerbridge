@@ -32,7 +32,8 @@ public:
 
 	void tourneyIsOver(QString tourneyId);
 	void sendTourneyInfo(QString tourneyId);
-
+	
+	bool hasUnknownStateLobbies();
 public slots:
 	void onTableOpenedEvent(QString tableId);
 	void observeTourney(QString tourneyId);

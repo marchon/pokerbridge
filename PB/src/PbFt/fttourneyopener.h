@@ -16,6 +16,8 @@ public:
 	void closeExtraLobbies();
 	bool isTourneyForClose(FTTourneyLobby *tl);
 	bool isTourneyForOpen(FTTourneyLobby *tl);
+
+	virtual bool isPaused();
 protected slots:
 	void onOpenTable(RMessage *msg);
 	void onCloseTourney(RMessage *msg);
@@ -23,7 +25,6 @@ protected slots:
 	void onTourneyLobbyClosed(QString tourneyId);
 	//void closeLobbies(bool all);
 protected:
-	int _splitIndex,_splitFactor;
 	QSet<QString> _observeList;
 	QSet<QString> _registerList;
 	QSet<QString> _closeList;
